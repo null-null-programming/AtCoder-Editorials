@@ -32,12 +32,12 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/search', methods=["GET"])
+@app.route('/search', methods=['GET'])
 def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest', methods=["POST"])
+@app.route('/search/contest', methods=['POST'])
 def contest_get():
     if request.form['contestname']:
         #データベースからコンテスト名と等しいものを取得する
@@ -45,10 +45,10 @@ def contest_get():
 
         return render_template('contest.html', contestname=request.form.get('contestname'), editorials=editorials)
     else:
-        return render_template('error.html', message="Error:指定されたコンテストが見つかりません、もう一度お確かめください。")
+        return render_template('error.html', message='Error:指定されたコンテストが見つかりません、もう一度お確かめください。')
 
 
-@app.route('/submited', methods=["POST"])
+@app.route('/submited', methods=['POST'])
 def submit():
     if (request.form.get('description') is not None or request.form.get('url') is not None) and request.form.get('title'):
         newEditorial = Editorial(
@@ -61,12 +61,12 @@ def submit():
         )
         db.session.add(newEditorial)
         db.session.commit()
-        return render_template("submited.html")
+        return render_template('submited.html')
     else:
         if request.form.get('title') is None:
-            return render_template("error.html", message="Error:タイトルを入力して下さい。")
+            return render_template('error.html', message='Error:タイトルを入力して下さい。')
         else:
-            return render_template("error.html", message="Error:URLまたは解説文を入力して下さい。")
+            return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
 
 
 @app.route('/logout')
@@ -133,5 +133,5 @@ def initdb_command():
     db.create_all()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
