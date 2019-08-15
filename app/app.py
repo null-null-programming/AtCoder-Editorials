@@ -27,6 +27,12 @@ class Editorial(db.Model):
     user_image_url = db.Column(db.String(1024), index=True)
 
 
+def _normalize_contestname(contestname):
+    if isinstance(contestname, str):
+        contestname = contestname.strip()
+    return contestname
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -39,7 +45,7 @@ def contest_search():
 
 @app.route('/search/contest', methods=['POST'])
 def contest_get():
-    contestname = request.form.get('contestname')
+    contestname = _normalize_contestname(request.form.get('contestname'))
 
     if contestname is not None:
         # データベースからコンテスト名と等しいものを取得する
@@ -55,7 +61,7 @@ def submit():
     params = {
         title: request.form.get('title'),
         description: request.form.get('description'),
-        contestname: request.form.get('contestname'),
+        contestname: _normalize_contestname(request.form.get('contestname')),
         url: request.form.get('url'),
         user_image_url: current_user.user_image_url,
         username: current_user.username
