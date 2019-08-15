@@ -40,7 +40,7 @@ def contest_search():
 @app.route('/search/contest', methods=['POST'])
 def contest_get():
     if request.form['contestname']:
-        #データベースからコンテスト名と等しいものを取得する
+        # データベースからコンテスト名と等しいものを取得する
         editorials = Editorial.query.filter_by(contestname=request.form['contestname']).all()
 
         return render_template('contest.html', contestname=request.form.get('contestname'), editorials=editorials)
