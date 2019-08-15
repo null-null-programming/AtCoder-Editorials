@@ -84,7 +84,7 @@ def oauth_callback():
     )
 
     profile=oauth_session.get('account/verify_credentials.json').json()
-    
+
     twitter_id=str(profile.get('id'))
     username=str(profile.get('name'))
     description=str(profile.get('description'))
@@ -100,7 +100,7 @@ def oauth_callback():
         description=description,
         user_image_url=profile_image_url)
         db.session.add(user)
-    
+
     db.session.commit()
     login_user(user,True)
     return redirect(url_for('index'))
