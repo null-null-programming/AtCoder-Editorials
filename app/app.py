@@ -8,23 +8,23 @@ from config import app, db, service, login_manager
 
 
 class User(UserMixin,db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    username=db.Column(db.String(64), index=True)
-    description=db.Column(db.String(1024), index=True)
-    user_image_url=db.Column(db.String(1024), index=True)
-    date_published=db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    twitter_id=db.Column(db.String(64), nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), index=True)
+    description = db.Column(db.String(1024), index=True)
+    user_image_url = db.Column(db.String(1024), index=True)
+    date_published = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    twitter_id = db.Column(db.String(64), nullable=False, unique=True)
 
 
 class Editorial(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    username=db.Column(db.String(64))
-    contestname=db.Column(db.String(64))
-    title=db.Column(db.String(64))
-    url=db.Column(db.String(120))
-    description=db.Column(db.String(1024))
-    like=db.Column(db.Integer)
-    user_image_url=db.Column(db.String(1024), index=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64))
+    contestname = db.Column(db.String(64))
+    title = db.Column(db.String(64))
+    url = db.Column(db.String(120))
+    description = db.Column(db.String(1024))
+    like = db.Column(db.Integer)
+    user_image_url = db.Column(db.String(1024), index=True)
 
 
 @app.route('/')
@@ -41,7 +41,7 @@ def contest_search():
 def contest_get():
     if request.form['contestname']:
         #データベースからコンテスト名と等しいものを取得する
-        editorials=Editorial.query.filter_by(contestname=request.form['contestname']).all()
+        editorials = Editorial.query.filter_by(contestname=request.form['contestname']).all()
 
         return render_template('contest.html', contestname=request.form.get('contestname', None), editorials=editorials)
     else:
@@ -50,13 +50,13 @@ def contest_get():
 
 @app.route('/submited', methods=["POST"])
 def submit():
-    if (request.form.get('description', None)!=None or request.form.get('url', None)!=None) and request.form.get('title', None):
-        newEditorial=Editorial(title=request.form.get('title', None), description=request.form.get('description', None), contestname=request.form.get('contestname', None), url=request.form.get('url', None), user_image_url=current_user.user_image_url, username=current_user.username)
+    if (request.form.get('description', None) != None or request.form.get('url', None) != None) and request.form.get('title', None):
+        newEditorial = Editorial(title=request.form.get('title', None), description=request.form.get('description', None), contestname=request.form.get('contestname', None), url=request.form.get('url', None), user_image_url=current_user.user_image_url, username=current_user.username)
         db.session.add(newEditorial)
         db.session.commit()
         return render_template("submited.html")
     else:
-        if request.form.get('title', None)==None:
+        if request.form.get('title', None) == None:
             return render_template("error.html", message="Error:タイトルを入力して下さい。")
         else:
             return render_template("error.html", message="Error:URLまたは解説文を入力して下さい。")
@@ -73,33 +73,33 @@ def oauth_authorize():
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
     else:
-        request_token=service.get_request_token(params={'oauth_callback':url_for('oauth_callback', provider='twitter', _external=True)})
-        session['request_token']=request_token
+        request_token = service.get_request_token(params={'oauth_callback':url_for('oauth_callback', provider='twitter', _external=True)})
+        session['request_token'] = request_token
         return redirect(service.get_authorize_url(request_token[0]))
 
 
 @app.route('/oauth/twitter/callback')
 def oauth_callback():
-    request_token=session.pop('request_token')
-    oauth_session=service.get_auth_session(
+    request_token = session.pop('request_token')
+    oauth_session = service.get_auth_session(
         request_token[0],
         request_token[1],
         data={'oauth_verifier':request.args['oauth_verifier']}
     )
 
-    profile=oauth_session.get('account/verify_credentials.json').json()
+    profile = oauth_session.get('account/verify_credentials.json').json()
 
-    twitter_id=str(profile.get('id'))
-    username=str(profile.get('name'))
-    description=str(profile.get('description'))
-    profile_image_url=str(profile.get('profile_image_url'))
-    user=db.session.query(User).filter(User.twitter_id==twitter_id).first()
+    twitter_id = str(profile.get('id'))
+    username = str(profile.get('name'))
+    description = str(profile.get('description'))
+    profile_image_url = str(profile.get('profile_image_url'))
+    user = db.session.query(User).filter(User.twitter_id == twitter_id).first()
 
     if user:
-        user.twitter_id=twitter_id
-        user.username=username
+        user.twitter_id = twitter_id
+        user.username = username
     else:
-        user=User(twitter_id=twitter_id,
+        user = User(twitter_id=twitter_id,
         username=username,
         description=description,
         user_image_url=profile_image_url)
@@ -120,5 +120,5 @@ def initdb_command():
     db.create_all()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True)
