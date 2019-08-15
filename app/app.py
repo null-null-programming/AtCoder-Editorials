@@ -1,30 +1,30 @@
-from flask import Flask,render_template,request,url_for,redirect,session
+from flask import Flask, render_template, request,url_for, redirect,session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import UserMixin,LoginManager,login_user,logout_user,current_user
+from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
 from rauth import OAuth1Service
-from config import app,db,service,login_manager
+from config import app, db, service, login_manager
 
 
 class User(UserMixin,db.Model):
-    id=db.Column(db.Integer,primary_key=True)
-    username=db.Column(db.String(64),index=True)
-    description=db.Column(db.String(1024),index=True)
-    user_image_url=db.Column(db.String(1024),index=True)
-    date_published=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-    twitter_id=db.Column(db.String(64),nullable=False,unique=True)
+    id=db.Column(db.Integer, primary_key=True)
+    username=db.Column(db.String(64), index=True)
+    description=db.Column(db.String(1024), index=True)
+    user_image_url=db.Column(db.String(1024), index=True)
+    date_published=db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    twitter_id=db.Column(db.String(64), nullable=False, unique=True)
 
 
 class Editorial(db.Model):
-    id=db.Column(db.Integer,primary_key=True)
+    id=db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(64))
     contestname=db.Column(db.String(64))
     title=db.Column(db.String(64))
     url=db.Column(db.String(120))
     description=db.Column(db.String(1024))
     like=db.Column(db.Integer)
-    user_image_url=db.Column(db.String(1024),index=True)
+    user_image_url=db.Column(db.String(1024), index=True)
 
 
 @app.route('/')
@@ -32,34 +32,34 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/search',methods=["GET"])
+@app.route('/search', methods=["GET"])
 def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest',methods=["POST"])
+@app.route('/search/contest', methods=["POST"])
 def contest_get():
     if request.form['contestname']:
         #データベースからコンテスト名と等しいものを取得する
         editorials=Editorial.query.filter_by(contestname=request.form['contestname']).all()
 
-        return render_template('contest.html',contestname=request.form.get('contestname',None),editorials=editorials)
+        return render_template('contest.html', contestname=request.form.get('contestname', None), editorials=editorials)
     else:
-        return render_template('error.html',message="Error:指定されたコンテストが見つかりません、もう一度お確かめください。")
+        return render_template('error.html', message="Error:指定されたコンテストが見つかりません、もう一度お確かめください。")
 
 
-@app.route('/submited',methods=["POST"])
+@app.route('/submited', methods=["POST"])
 def submit():
-    if (request.form.get('description',None)!=None or request.form.get('url',None)!=None) and request.form.get('title',None):
-        newEditorial=Editorial(title=request.form.get('title',None),description=request.form.get('description',None),contestname=request.form.get('contestname',None),url=request.form.get('url',None),user_image_url=current_user.user_image_url,username=current_user.username)
+    if (request.form.get('description', None)!=None or request.form.get('url', None)!=None) and request.form.get('title', None):
+        newEditorial=Editorial(title=request.form.get('title', None), description=request.form.get('description', None), contestname=request.form.get('contestname', None), url=request.form.get('url', None), user_image_url=current_user.user_image_url, username=current_user.username)
         db.session.add(newEditorial)
         db.session.commit()
         return render_template("submited.html")
     else:
-        if request.form.get('title',None)==None:
-            return render_template("error.html",message="Error:タイトルを入力して下さい。")
+        if request.form.get('title', None)==None:
+            return render_template("error.html", message="Error:タイトルを入力して下さい。")
         else:
-            return render_template("error.html",message="Error:URLまたは解説文を入力して下さい。")
+            return render_template("error.html", message="Error:URLまたは解説文を入力して下さい。")
 
 
 @app.route('/logout')
@@ -73,7 +73,7 @@ def oauth_authorize():
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
     else:
-        request_token=service.get_request_token(params={'oauth_callback':url_for('oauth_callback',provider='twitter',_external=True)})
+        request_token=service.get_request_token(params={'oauth_callback':url_for('oauth_callback', provider='twitter', _external=True)})
         session['request_token']=request_token
         return redirect(service.get_authorize_url(request_token[0]))
 
@@ -106,7 +106,7 @@ def oauth_callback():
         db.session.add(user)
 
     db.session.commit()
-    login_user(user,True)
+    login_user(user, True)
     return redirect(url_for('index'))
 
 
