@@ -50,7 +50,7 @@ def contest_get():
 
 @app.route('/submited', methods=["POST"])
 def submit():
-    if (request.form.get('description') != None or request.form.get('url') != None) and request.form.get('title'):
+    if (request.form.get('description') is not None or request.form.get('url') is not None) and request.form.get('title'):
         newEditorial = Editorial(
             title=request.form.get('title'),
             description=request.form.get('description'),
@@ -63,7 +63,7 @@ def submit():
         db.session.commit()
         return render_template("submited.html")
     else:
-        if request.form.get('title') == None:
+        if request.form.get('title') is None:
             return render_template("error.html", message="Error:タイトルを入力して下さい。")
         else:
             return render_template("error.html", message="Error:URLまたは解説文を入力して下さい。")
