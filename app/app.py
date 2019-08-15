@@ -52,20 +52,22 @@ def contest_get():
 
 @app.route('/submited', methods=['POST'])
 def submit():
-    if (request.form.get('description') is not None or request.form.get('url') is not None) and request.form.get('title'):
-        newEditorial = Editorial(
-            title=request.form.get('title'),
-            description=request.form.get('description'),
-            contestname=request.form.get('contestname'),
-            url=request.form.get('url'),
-            user_image_url=current_user.user_image_url,
-            username=current_user.username
-        )
+    params = {
+        title: request.form.get('title'),
+        description: request.form.get('description'),
+        contestname: request.form.get('contestname'),
+        url: request.form.get('url'),
+        user_image_url: current_user.user_image_url,
+        username: current_user.username
+    }
+
+    if (params['description'] is not None or params['url'] is not None) and params['title'] is not None:
+        newEditorial = Editorial(**params)
         db.session.add(newEditorial)
         db.session.commit()
         return render_template('submited.html')
     else:
-        if request.form.get('title') is None:
+        if params['title'] is None:
             return render_template('error.html', message='Error:タイトルを入力して下さい。')
         else:
             return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
