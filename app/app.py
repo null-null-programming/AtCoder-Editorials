@@ -51,7 +51,14 @@ def contest_get():
 @app.route('/submited', methods=["POST"])
 def submit():
     if (request.form.get('description', None) != None or request.form.get('url', None) != None) and request.form.get('title', None):
-        newEditorial = Editorial(title=request.form.get('title', None), description=request.form.get('description', None), contestname=request.form.get('contestname', None), url=request.form.get('url', None), user_image_url=current_user.user_image_url, username=current_user.username)
+        newEditorial = Editorial(
+            title=request.form.get('title', None),
+            description=request.form.get('description', None),
+            contestname=request.form.get('contestname', None),
+            url=request.form.get('url', None),
+            user_image_url=current_user.user_image_url,
+            username=current_user.username
+        )
         db.session.add(newEditorial)
         db.session.commit()
         return render_template("submited.html")
@@ -73,7 +80,9 @@ def oauth_authorize():
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
     else:
-        request_token = service.get_request_token(params={'oauth_callback':url_for('oauth_callback', provider='twitter', _external=True)})
+        request_token = service.get_request_token(params={
+            'oauth_callback': url_for('oauth_callback', provider='twitter', _external=True)
+        })
         session['request_token'] = request_token
         return redirect(service.get_authorize_url(request_token[0]))
 
@@ -84,7 +93,9 @@ def oauth_callback():
     oauth_session = service.get_auth_session(
         request_token[0],
         request_token[1],
-        data={'oauth_verifier':request.args['oauth_verifier']}
+        data={
+            'oauth_verifier': request.args['oauth_verifier']
+        }
     )
 
     profile = oauth_session.get('account/verify_credentials.json').json()
@@ -99,10 +110,12 @@ def oauth_callback():
         user.twitter_id = twitter_id
         user.username = username
     else:
-        user = User(twitter_id=twitter_id,
-        username=username,
-        description=description,
-        user_image_url=profile_image_url)
+        user = User(
+            twitter_id=twitter_id,
+            username=username,
+            description=description,
+            user_image_url=profile_image_url
+        )
         db.session.add(user)
 
     db.session.commit()
