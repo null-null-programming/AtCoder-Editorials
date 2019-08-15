@@ -4,8 +4,8 @@ from flask_migrate import Migrate
 from flask_login import UserMixin,LoginManager,login_user,logout_user,current_user
 from datetime import datetime
 from rauth import OAuth1Service
-
 from config import app,db,service,login_manager
+
 
 class User(UserMixin,db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -14,6 +14,7 @@ class User(UserMixin,db.Model):
     user_image_url=db.Column(db.String(1024),index=True)
     date_published=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
     twitter_id=db.Column(db.String(64),nullable=False,unique=True)
+
 
 class Editorial(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -46,6 +47,7 @@ def contest_get():
     else:
         return render_template('error.html',message="Error:指定されたコンテストが見つかりません、もう一度お確かめください。")
 
+
 @app.route('/submited',methods=["POST"])
 def submit():
     if (request.form.get('description',None)!=None or request.form.get('url',None)!=None) and request.form.get('title',None):
@@ -65,6 +67,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.route('/oauth/twitter')
 def oauth_authorize():
     if not current_user.is_anonymous:
@@ -73,6 +76,7 @@ def oauth_authorize():
         request_token=service.get_request_token(params={'oauth_callback':url_for('oauth_callback',provider='twitter',_external=True)})
         session['request_token']=request_token
         return redirect(service.get_authorize_url(request_token[0]))
+
 
 @app.route('/oauth/twitter/callback')
 def oauth_callback():
@@ -109,6 +113,7 @@ def oauth_callback():
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
 
 @app.cli.command('initdb')
 def initdb_command():
