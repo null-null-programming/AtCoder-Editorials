@@ -39,11 +39,13 @@ def contest_search():
 
 @app.route('/search/contest', methods=['POST'])
 def contest_get():
-    if request.form['contestname']:
-        # データベースからコンテスト名と等しいものを取得する
-        editorials = Editorial.query.filter_by(contestname=request.form['contestname']).all()
+    contestname = request.form.get('contestname')
 
-        return render_template('contest.html', contestname=request.form.get('contestname'), editorials=editorials)
+    if contestname is not None:
+        # データベースからコンテスト名と等しいものを取得する
+        editorials = Editorial.query.filter_by(contestname=contestname).all()
+
+        return render_template('contest.html', contestname=contestname, editorials=editorials)
     else:
         return render_template('error.html', message='Error:指定されたコンテストが見つかりません、もう一度お確かめください。')
 
