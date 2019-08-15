@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>AtCoder Editorials</title>
+</head>
+
+<body style="padding-top:5rem">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <nav class="navbar navbar-expand-md  navbar-dark bg-dark fixed-top">
+        <a href="/" class="navbar-brand">AtCoder Editorials</a>
+
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#nav1">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav1">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/" class="nav-link">ホーム</a></li>
+                <li class="nav-item active"><a href="/search" class="nav-link">コンテスト</a></li>
+            </ul>
+            {% if current_user.is_authenticated==False %}
+            <span class="navbar-text"><a href="/oauth/twitter" class="btn btn-info">ログイン</a></span> {%else%}
+            <span class="navbar-text"><a href="/logout" class="btn btn-info">ログアウト</a></span> {%endif%}
+        </div>
+    </nav>
+
+
+    <div class="container-fluid">
+        <h1>{{contestname}}</h1>
+    </div>
+
+
+    <br> {% if current_user.is_authenticated== True %}
+    <div id="submit-card">
+
+        <div class="card col-6 border-0">
+            <h4 class="card-header text-white bg-info col-10" data-toggle="collapse" data-target="#sub1">
+                投稿する
+            </h4>
+            <div class="collapse" id="sub1" data-parent="#submit-card">
+                <form action="/submited " method='POST'>
+                    <input type="text" placeholder="タイトル" name="title" style="width:535px" />
+                    <br>
+                    <input type="text" placeholder="URL" name="url" style="width:535px" />
+                    <br>
+                    <textarea placeholder=" 解説文 " name="description" rows=15 cols=55></textarea>
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}} ">投稿</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <h4>投稿をするにはログインが必要です</h4>
+    {%endif%}
+    <br>
+
+
+    <div>
+        {% if editorials|length==0 %}
+        <h4>まだ投稿がありません</h4>
+        {%else%}
+
+        <div class="container-fluid">
+            <div id="editorial-card">
+
+                {% for edit in editorials %}
+                <div class="row">
+                    <div></div>
+                    <div>
+                        <img class="img-thumbnail" style="min-width: 40px" src={{edit.user_image_url}}/>
+                    </div>
+                    <div>
+                        <h5>{{edit.username}}</h5>
+                    </div>
+                </div>
+                <div class="card col-6 border-0">
+                    <h4 class="card-header text-light bg-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
+                        {{edit.title}}
+                    </h4>
+
+                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                        {% if edit.url!=None%}
+                        <a href={{edit.url}}>{{edit.url}}</a> {%endif%}
+                    </div>
+
+                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                        {%if edit.description!=None%}
+                        <br>
+                        <p>{{edit.description}}</p>
+                        {%endif%}
+                    </div>
+
+                </div>
+                <br>
+                <br> {% endfor %}
+            </div>
+            {%endif%}
+
+
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+</body>
+
+
+</html>

@@ -1,0 +1,19 @@
+textarea {
+    vertical-align: top;
+}
+
+a,
+a:focus {
+    outline: none;
+}
+
+button,
+input,
+input:focus {
+    outline: none;
+}
+
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+    border: none;
+}
