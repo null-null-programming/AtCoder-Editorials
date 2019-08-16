@@ -98,8 +98,8 @@
         </div>
     </div>
 
-    <div class="container-fluid">
-        {% if editorials.has_prev and page!=1 %}
+    <div class="container-fluid h4">
+        {% if editorials.has_prev %}
         <a href="{{ url_for('contest_get', page=editorials.prev_num) }}">
             << 前のページ</a>
                 {% else %}

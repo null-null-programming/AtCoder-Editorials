@@ -47,13 +47,10 @@ def contest_search():
 def contest_get(page=1):
     contestname = _normalize_contestname(request.form.get('contestname'))
 
-    if contestname is not None or page is not 1:
-        per_page = 10
-        editorials = Editorial.query.order_by(Editorial.like).paginate(page, per_page, error_out=False)
+    per_page = 10
+    editorials = Editorial.query.order_by(Editorial.like).paginate(page, per_page, error_out=False)
 
-        return render_template('contest.html', contestname=contestname, editorials=editorials)
-    else:
-        return render_template('error.html', message='Error:指定されたコンテストが見つかりません、もう一度お確かめください。')
+    return render_template('contest.html', contestname=contestname, editorials=editorials)
 
 
 @app.route('/submited', methods=['POST'])
