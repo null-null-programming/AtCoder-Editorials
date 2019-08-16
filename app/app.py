@@ -48,7 +48,7 @@ def contest_get(page=1):
     contestname = _normalize_contestname(request.form.get('contestname'))
 
     per_page = 10
-    editorials = Editorial.query.order_by(Editorial.like).paginate(page, per_page, error_out=False)
+    editorials = Editorial.query.filter_by(contestname=contestname).paginate(page, per_page, error_out=False)
 
     return render_template('contest.html', contestname=contestname, editorials=editorials)
 

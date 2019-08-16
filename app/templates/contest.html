@@ -25,7 +25,7 @@
             </ul>
             {% if current_user.is_authenticated==False %}
             <span class="navbar-text"><a href="/oauth/twitter" class="btn btn-info">ログイン</a></span> {%else%}
-            <span class="navbar-text"><a href="/logout" class="btn btn-info">ログアウト</a></span> {%endif%}
+            <span class="navbar-text"><a href="/logout" class="btn btn-danger">ログアウト</a></span> {%endif%}
         </div>
     </nav>
 
