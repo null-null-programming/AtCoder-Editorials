@@ -25,6 +25,7 @@ class Editorial(db.Model):
     description = db.Column(db.String(1024))
     like = db.Column(db.Integer)
     user_image_url = db.Column(db.String(1024), index=True)
+    twitter_id=db.Column(db.String(64))
 
 
 def _normalize_contestname(contestname):
@@ -60,8 +61,10 @@ def submit():
         'description': request.form.get('description'),
         'contestname': _normalize_contestname(request.form.get('contestname')),
         'url': request.form.get('url'),
+        'like':int(0)
         'user_image_url': current_user.user_image_url,
-        'username': current_user.username
+        'username': current_user.username,
+        'twitter_id':current_user.id
     }
 
     print(params)
