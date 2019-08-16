@@ -43,13 +43,13 @@ def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest', methods=['POST'])
-def contest_get():
+@app.route('/search/contest/<int:page>', methods=['GET','POST'])
+def contest_get(page=1):
     contestname = _normalize_contestname(request.form.get('contestname'))
 
-    if contestname is not None:
-        # データベースからコンテスト名と等しいものを取得する
-        editorials = Editorial.query.filter_by(contestname=contestname).all()
+    if contestname is not None or page is not 1:
+        per_page = 10
+        editorials = Editorial.query.order_by(Editorial.like).paginate(page, per_page, error_out=False)
 
         return render_template('contest.html', contestname=contestname, editorials=editorials)
     else:

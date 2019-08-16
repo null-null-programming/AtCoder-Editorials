@@ -55,29 +55,23 @@
         </div>
     </div>
     {% else %}
-    <h4>投稿をするにはログインが必要です</h4>
+    <div class="container-fluid">
+        <h4>投稿をするにはログインが必要です</h4>
+    </div>
     {%endif%}
     <br>
 
 
     <div>
-        {% if editorials|length==0 %}
-        <h4>まだ投稿がありません</h4>
-        {%else%}
 
         <div class="container-fluid">
             <div id="editorial-card">
 
-                {% for edit in editorials %}
-                <div class="row">
-                    <div></div>
-                    <div>
-                        <img class="img-thumbnail" style="min-width: 40px" src={{edit.user_image_url}}/>
-                    </div>
-                    <div>
-                        <h5>{{edit.username}}</h5>
-                    </div>
-                </div>
+                {% for edit in editorials.items %}
+                <img src={{edit.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;">
+                <span class="h4" style="vertical-align:middle;">{{edit.username}}</span>
+
+
                 <div class="card col-6 border-0">
                     <h4 class="card-header text-light bg-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
                         {{edit.title}}
@@ -99,10 +93,18 @@
                 <br>
                 <br> {% endfor %}
             </div>
-            {%endif%}
 
 
         </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if editorials.has_prev and page!=1 %}
+        <a href="{{ url_for('contest_get', page=editorials.prev_num) }}">
+            << 前のページ</a>
+                {% else %}
+                << 前のページ {% endif %} | {% if editorials.has_next %} <a href="{{ url_for('contest_get', page=editorials.next_num) }}">次のページ >></a>
+        {% else %} 次のページ >> {% endif %}
     </div>
 
 
@@ -110,6 +112,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
 </body>
-
 
 </html>
