@@ -59,13 +59,15 @@ def contest_get():
 @app.route('/submited', methods=['POST'])
 def submit():
     params = {
-        title: request.form.get('title'),
-        description: request.form.get('description'),
-        contestname: _normalize_contestname(request.form.get('contestname')),
-        url: request.form.get('url'),
-        user_image_url: current_user.user_image_url,
-        username: current_user.username
+        'title': request.form.get('title'),
+        'description': request.form.get('description'),
+        'contestname': _normalize_contestname(request.form.get('contestname')),
+        'url': request.form.get('url'),
+        'user_image_url': current_user.user_image_url,
+        'username': current_user.username
     }
+
+    print(params)
 
     if (params['description'] is not None or params['url'] is not None) and params['title'] is not None:
         newEditorial = Editorial(**params)
