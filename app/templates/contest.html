@@ -74,6 +74,7 @@
 
 
     <div>
+        {% if editorials.items|length >0 %}
 
         <div class="container-fluid">
             <div id="editorial-card">
@@ -107,8 +108,9 @@
                 <br>
                 <br> {% endfor %}
             </div>
-
-
+            {%else%}
+            <h4 class='container-fluid'>まだ投稿がありません</h4>
+            <br> {%endif%}
         </div>
     </div>
 
