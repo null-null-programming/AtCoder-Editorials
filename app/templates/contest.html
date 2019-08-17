@@ -123,7 +123,7 @@
         << 前のページ</a> {% else %}
         << 前のページ {% endif %} | {% if editorials.has_next %} {%if contestname==None%} <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
             {%else%}
-            <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname) }}">
+            <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
         {%endif%}
          次のページ >></a> {% else %} 次のページ >> {% endif %}
     </div>

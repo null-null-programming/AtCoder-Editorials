@@ -46,6 +46,9 @@ def contest_search():
 @app.route('/search/contest/<int:page>', methods=['GET','POST'])
 def contest_get(page=1):
     contestname = _normalize_contestname(request.form.get('contestname'))
+    
+    if contestname==None:
+        contestname=request.args.get('contestname','')
 
     per_page = 10
     editorials = Editorial.query.filter_by(contestname=contestname).paginate(page, per_page, error_out=False)
@@ -69,7 +72,8 @@ def submit():
     params['description']=params['description'].replace('\r\n','<br>')
     print(params)
 
-    if (params['description'] is not None or params['url'] is not None) and params['title'] is not None:
+    if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
+          and params['title'] is not None and params['title'] is not '':
         newEditorial = Editorial(**params)
         db.session.add(newEditorial)
         db.session.commit()
