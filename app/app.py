@@ -66,6 +66,7 @@ def submit():
         'user_id':current_user.id
     }   
 
+    params['description']=params['description'].replace('\r\n','<br>')
     print(params)
 
     if (params['description'] is not None or params['url'] is not None) and params['title'] is not None:
@@ -78,6 +79,15 @@ def submit():
             return render_template('error.html', message='Error:タイトルを入力して下さい。')
         else:
             return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
+
+
+@app.route('/user')
+def user():
+    return render_template('user.html')
+
+@app.route('/ranking')
+def ranking():
+    return render_template('ranking.html')
 
 
 @app.route('/logout')
