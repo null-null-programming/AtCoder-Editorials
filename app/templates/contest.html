@@ -76,56 +76,61 @@
     <div>
         {% if editorials.items|length >0 %}
 
-        <div class="container-fluid">
-            <div id="editorial-card">
+        <div id="editorial-card">
 
-                {% for edit in editorials.items %}
-                <div>
-                    <img src={{edit.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;">
-                    <span class="h4" style="vertical-align:middle;">{{edit.username}}</span>
-                    <span class="mx-auto" style="vertical-align:middle;">113いいね</span>
-                </div>
-
-
-                <div class="card col-6 border-0">
-                    <h4 class="card-header text-light bg-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
-                        {{edit.title}}
-                    </h4>
-
-                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
-                        {% if edit.url!=None%}
-                        <a href={{edit.url}}>{{edit.url}}</a> {%endif%}
-                    </div>
-
-                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
-                        {% autoescape false %} {%if edit.description!=None%}
-                        <br>
-                        <p>{{edit.description}}</p>
-                        {%endif%} {% endautoescape %}
-                    </div>
-
-                </div>
-                <br>
-                <br> {% endfor %}
+            {% for edit in editorials.items %}
+            <div class="row col-3">
+                <h5 class="col-1"></h5>
+                <form class='ajax_submit' style="vertical-align:middle;" method="POST" action="/like">
+                    <button id="like_button" class="btn btn-outline-info">{{edit.like}}いいね</button>
+                </form>
+                <h5 class="col-1"></h5>
+                <img src={{edit.user_image_url}} alt='No Image' style="width:36px;height:36px;vertical-align:middle;">
+                <span class="h4" style="vertical-align:middle;">{{edit.username}}</span>
             </div>
-            {%else%}
-            <h4 class='container-fluid'>まだ投稿がありません</h4>
-            <br> {%endif%}
+
+
+            <div class="card col-6 border-0">
+                <h4 class="card-header text-light bg-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
+                    {{edit.title}}
+                </h4>
+
+                <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                    {% if edit.url!=None%}
+                    <a href={{edit.url}}>{{edit.url}}</a> {%endif%}
+                </div>
+
+                <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                    {% autoescape false %} {%if edit.description!=None%}
+                    <br>
+                    <p>{{edit.description}}</p>
+                    {%endif%} {% endautoescape %}
+                </div>
+            </div>
+            <br>
+            <br> {% endfor %}
         </div>
+        {%else%}
+        <h4 class='container-fluid'>まだ投稿がありません</h4>
+        <br> {%endif%}
+    </div>
     </div>
 
     <div class="container-fluid h4">
-        {% if editorials.has_prev %} {%if contestname==None%}
-        <a href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
+
+        <ul class="pagination">
+            {% if editorials.has_prev %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
         {%else%}
-        <a href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
         {%endif%}
-        << 前のページ</a> {% else %}
-        << 前のページ {% endif %} | {% if editorials.has_next %} {%if contestname==None%} <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
-            {%else%}
-            <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
+        << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
+                {%else%}
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
         {%endif%}
-         次のページ >></a> {% else %} 次のページ >> {% endif %}
+         次のページ >></a></li>{% endif %}
+        </ul>
     </div>
 
 

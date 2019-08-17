@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,url_for, redirect,session
+from flask import Flask, render_template, request,url_for, redirect,session,Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
@@ -146,7 +146,6 @@ def oauth_callback():
     db.session.commit()
     login_user(user, True)
     return redirect(url_for('index'))
-
 
 @login_manager.user_loader
 def load_user(id):
