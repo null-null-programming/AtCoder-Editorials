@@ -58,8 +58,8 @@
                     <input type="text" placeholder="URL" name="url" style="width:535px" />
                     <br>
                     <textarea placeholder=" 解説文 " name="description" style="white-space:pre" rows=15 cols=55></textarea> {%if contestname==None%}
-                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}} ">投稿</button> {%else%}
-                    <button type="submit" class="btn btn-info" name="contestname" value="request.args.get('contestname','') ">投稿</button>{%endif%}
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{request.args.get('contestname','')}}">投稿</button> {%else%}
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}}">投稿</button>{%endif%}
 
                 </form>
             </div>
@@ -113,12 +113,17 @@
     </div>
 
     <div class="container-fluid h4">
-        {% if editorials.has_prev %}
-        <a href="{{ url_for('contest_get', page=editorials.prev_num) }}">
-            << 前のページ</a>
-                {% else %}
-                << 前のページ {% endif %} | {% if editorials.has_next %} <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname) }}">次のページ >></a>
-        {% else %} 次のページ >> {% endif %}
+        {% if editorials.has_prev %} {%if contestname==None%}
+        <a href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
+        {%else%}
+        <a href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
+        {%endif%}
+        << 前のページ</a> {% else %}
+        << 前のページ {% endif %} | {% if editorials.has_next %} {%if contestname==None%} <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
+            {%else%}
+            <a href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname) }}">
+        {%endif%}
+         次のページ >></a> {% else %} 次のページ >> {% endif %}
     </div>
 
 
