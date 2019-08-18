@@ -14,6 +14,7 @@ class User(UserMixin,db.Model):
     user_image_url = db.Column(db.String(1024), index=True)
     date_published = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     twitter_id = db.Column(db.String(64), nullable=False, unique=True)
+    like_sum=db.Column(db.Integer)
 
 
 class Editorial(db.Model):
@@ -26,6 +27,11 @@ class Editorial(db.Model):
     like = db.Column(db.Integer)
     user_image_url = db.Column(db.String(1024), index=True)
     user_id=db.Column(db.Integer)
+
+class Like(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    user_id=db.Column(db.Integer)
+    edit_id=db.Column(db.Integer)
 
 def _normalize_contestname(contestname):
     if isinstance(contestname, str):
@@ -53,7 +59,16 @@ def contest_get(page=1):
     per_page = 10
     editorials = Editorial.query.filter_by(contestname=contestname).paginate(page, per_page, error_out=False)
 
-    return render_template('contest.html', contestname=contestname, editorials=editorials)
+    flag={}
+    for edit in editorials.items:
+        like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
+        print(like)
+        if like:
+            flag[edit.id]=True
+        else:
+            flag[edit.id]=False
+
+    return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag)
 
 
 @app.route('/submited', methods=['POST'])
@@ -139,7 +154,8 @@ def oauth_callback():
             twitter_id=twitter_id,
             username=username,
             description=description,
-            user_image_url=profile_image_url
+            user_image_url=profile_image_url,
+            like_sum=0
         )
         db.session.add(user)
 
