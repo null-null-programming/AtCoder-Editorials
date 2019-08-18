@@ -162,7 +162,7 @@
                     type: 'post',
                     dataType: 'text',
                     data: {
-                        id: $("[name=id]").val(),
+                        id: $(this).val(),
                     },
                 }).done(function(response) {
                     console.log('success');
