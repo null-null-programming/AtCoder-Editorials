@@ -59,16 +59,19 @@ def contest_get(page=1):
     per_page = 10
     editorials = Editorial.query.filter_by(contestname=contestname).paginate(page, per_page, error_out=False)
 
-    flag={}
-    for edit in editorials.items:
-        like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
-        print(like)
-        if like:
-            flag[edit.id]=True
-        else:
-            flag[edit.id]=False
+    if current_user.is_authenticated==True:
+        flag={}
+        for edit in editorials.items:
+            like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
+            print(like)
+            if like:
+                flag[edit.id]=True
+            else:
+                flag[edit.id]=False
 
-    return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag)
+        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag)
+    else:
+        return render_template('contest.html',contestname=contestname,editorials=editorials)
 
 
 @app.route('/submited', methods=['POST'])
@@ -85,7 +88,6 @@ def submit():
     }   
 
     params['description']=params['description'].replace('\r\n','<br>')
-    print(params)
 
     if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
           and params['title'] is not None and params['title'] is not '':
@@ -155,13 +157,36 @@ def oauth_callback():
             username=username,
             description=description,
             user_image_url=profile_image_url,
-            like_sum=0
+            like_sum=int(0)
         )
         db.session.add(user)
 
     db.session.commit()
     login_user(user, True)
     return redirect(url_for('index'))
+
+@app.route('/like',methods=['POST'])
+def like():
+    id=request.form['id']
+    print(id)
+    flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
+    edit=db.session.query(Editorial).filter(Editorial.id==id).first()
+    user=db.session.query(User).filter(User.id==current_user.id).first()
+
+    #いいねされていた場合
+    newLike=Like(user_id=current_user.id,edit_id=id)
+    if flag==True:
+        edit.like-=1
+        user.like_sum-=1
+        db.session.delete(newLike)
+    else:
+        edit.like+=1
+        user.like_sum+=1
+        db.session.add(newLike)
+
+    db.session.commit()
+
+    return 'hoge'
 
 @login_manager.user_loader
 def load_user(id):
