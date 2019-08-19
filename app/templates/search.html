@@ -34,7 +34,14 @@
     </nav>
 
     <div class="container-fluid">
-        <h3>コンテスト名を記入し、下の候補からコンテストを選んで下さい</h3>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h4 class="display-4">コンテスト検索</h4>
+                <br>
+                <h5>解法の見たいコンテスト名を入力し、下の候補から選択して下さい。</h5>
+            </div>
+        </div>
+
         <br>
         <form id="search" method="POST" action="/search/contest/1">
             <input id="autocomplete_search" placeholder="コンテスト名" style="width:600px" name="contestname" type="text" />

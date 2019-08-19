@@ -24,7 +24,7 @@ class Editorial(db.Model):
     contestname = db.Column(db.String(64))
     title = db.Column(db.String(64))
     url = db.Column(db.String(120))
-    description = db.Column(db.String(1024))
+    description = db.Column(db.String(2048))
     like = db.Column(db.Integer)
     user_image_url = db.Column(db.String(1024), index=True)
     user_id=db.Column(db.Integer)
@@ -109,7 +109,7 @@ def user(id):
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
-    per_page = 30
+    per_page = 50
     users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
 
     return render_template('ranking.html',users=users,page=page,per_page=per_page)
