@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request,url_for, redirect,session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
@@ -102,13 +103,16 @@ def submit():
             return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
 
 
-@app.route('/user')
-def user():
+@app.route('/user/<int:id>',methods=['GET'])
+def user(id):
     return render_template('user.html')
 
-@app.route('/ranking')
-def ranking():
-    return render_template('ranking.html')
+@app.route('/ranking/<int:page>')
+def ranking(page=1):
+    per_page = 30
+    users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
+
+    return render_template('ranking.html',users=users,page=page,per_page=per_page)
 
 
 @app.route('/logout')
@@ -168,17 +172,18 @@ def oauth_callback():
 @app.route('/like',methods=['POST'])
 def like():
     id=request.form['id']
-    print(id)
     flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
     user=db.session.query(User).filter(User.id==current_user.id).first()
 
+    print(id,flag,edit,user)
+
     #いいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
-    if flag==True:
+    if flag!=None:
         edit.like-=1
         user.like_sum-=1
-        db.session.delete(newLike)
+        db.session.delete(flag)
     else:
         edit.like+=1
         user.like_sum+=1
