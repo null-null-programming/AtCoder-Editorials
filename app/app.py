@@ -188,7 +188,7 @@ def like():
     id=request.form['id']
     flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
-    user=db.session.query(User).filter(User.id==id).first()
+    user=db.session.query(User).filter(User.id==edit.user_id).first()
 
     #いいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
@@ -210,6 +210,7 @@ def delete():
     edit=db.session.query(Editorial).filter(Editorial.id==request.form['id']).first()
     db.session.delete(edit)
     db.session.commit()
+
     return 'hoge'
 
 @app.errorhandler(401)
