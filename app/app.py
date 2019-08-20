@@ -58,7 +58,8 @@ def contest_get(page=1):
         contestname=request.args.get('contestname','')
 
     per_page = 10
-    editorials = Editorial.query.filter_by(contestname=contestname).paginate(page, per_page, error_out=False)
+    editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
+    print(type(editorials))
 
     if current_user.is_authenticated==True:
         flag={}
