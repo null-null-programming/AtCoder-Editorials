@@ -89,90 +89,88 @@
                     <button class="like_button btn btn-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
                 </form>
                 {%endif%} {%else%}
-                <div>
-                    <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
-                    <h5 class="col-1"></h5>
-                    <img src={{edit.user_image_url}} alt='No Image' style="width:36px;height:36px;vertical-align:middle;">
-                    <a href="/user/{{edit.user_id}}/1" class="h4" style="vertical-align:middle;">{{edit.username}}</a>
-                    </a>
-                </div>
-
-
-                <div class="card col-6 border-0">
-                    <h4 class="card-header text-light bg-light text-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
-                        {{edit.title}}
-                    </h4>
-
-                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
-                        {% if edit.url!=None%}
-                        <a href={{edit.url}}>{{edit.url}}</a> {%endif%}
-                    </div>
-
-                    <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
-                        {% autoescape false %} {%if edit.description!=None%}
-                        <br>
-                        <p>{{edit.description}}</p>
-                        {%endif%} {% endautoescape %}
-                    </div>
-                </div>
-                <br>
-                <br> {% endfor %}
+                <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
+                <h5 class="col-1"></h5>
+                <img src={{edit.user_image_url}} alt='No Image' style="width:36px;height:36px;vertical-align:middle;">
+                <a href="/user/{{edit.user_id}}/1" class="h4" style="vertical-align:middle;">{{edit.username}}</a>
+                </a>
             </div>
-            {%else%}
-            <h4 class='container-fluid'>まだ投稿がありません</h4>
-            <br> {%endif%}
+
+            <div class="card col-6 border-0">
+                <h4 class="card-header text-light bg-light text-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
+                    {{edit.title}}
+                </h4>
+
+                <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                    {% if edit.url!=None%}
+                    <a href={{edit.url}}>{{edit.url}}</a> {%endif%}
+                </div>
+
+                <div class="collapse" id="edi{{loop.index}}" data-parent="#editorial-card">
+                    {% autoescape false %} {%if edit.description!=None%}
+                    <br>
+                    <p>{{edit.description}}</p>
+                    {%endif%} {% endautoescape %}
+                </div>
+            </div>
+            <br>
+            <br> {% endfor %}
         </div>
+        {%else%}
+        <h4 class='container-fluid'>まだ投稿がありません</h4>
+        <br> {%endif%}
+    </div>
 
-        <div class="container-fluid h4">
+    <div class="container-fluid h4">
 
-            <ul class="pagination">
-                {% if editorials.has_prev %} {%if contestname==None%}
-                <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
+        <ul class="pagination">
+            {% if editorials.has_prev %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
         {%else%}
         <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
         {%endif%}
         << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-                <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
                 {%else%}
                 <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
         {%endif%}
          次のページ >></a></li>{% endif %}
-            </ul>
-        </div>
+        </ul>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
 
-        <script type="text/javascript">
-            $('.like_button').on('click', function() {
-                $(this).toggleClass('active');
+    <script type="text/javascript">
+        $('.like_button').on('click', function() {
+            $(this).toggleClass('active');
 
-                if ($(this).hasClass('active')) {
-                    var text = $(this).data('btn btn-info');
-                } else {
-                    var text = $(this).data('btn btnconsole.log($(this).val);-outline-info');
-                }
+            if ($(this).hasClass('active')) {
+                var text = $(this).data('btn btn-info');
+            } else {
+                var text = $(this).data('btn btnconsole.log($(this).val);-outline-info');
+            }
 
-                $(this).html(text);
+            $(this).html(text);
 
-                event.preventDefault();
-                $.ajax({
-                        url: '/like',
-                        type: 'post',
-                        dataType: 'text',
-                        data: {
-                            id: $(this).val(),
-                        },
-                    }).done(function(response) {
-                        console.log('success');
-                    })
-                    .fail(function() {
-                        console.log('fail');
-                    });
+            event.preventDefault();
+            $.ajax({
+                    url: '/like',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {
+                        id: $(this).val(),
+                    },
+                }).done(function(response) {
+                    console.log('success');
+                })
+                .fail(function() {
+                    console.log('fail');
+                });
 
-            })
-        </script>
+        })
+    </script>
 </body>
 
 </html>
