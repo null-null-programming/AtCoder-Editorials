@@ -44,8 +44,7 @@
             <tbody>
                 <tr>
                     <th scope="row">{{loop.index+(page-1)*per_page}}</th>
-                    <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> {{user.username}}
-                    </td>
+                    <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> <a href="/user/{{user.id}}/1">{{user.username}}</a></td>
                     <td>{{user.like_sum}}</td>
                 </tr>
                 {%endfor%}

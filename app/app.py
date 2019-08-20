@@ -188,7 +188,7 @@ def like():
     id=request.form['id']
     flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
-    user=db.session.query(User).filter(User.id==current_user.id).first()
+    user=db.session.query(User).filter(User.id==edit.id).first()
 
     print(id,flag,edit,user)
 
