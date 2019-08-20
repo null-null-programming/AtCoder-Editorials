@@ -209,6 +209,14 @@ def like():
 @app.route('/delete',methods=['POST'])
 def delete():
     edit=db.session.query(Editorial).filter(Editorial.id==request.form['id']).first()
+
+    user=db.session.query(User).filter(User.id==edit.user_id).first()
+    user.like_sum-=edit.like
+
+    like=db.session.query(Like).filter(Like.edit_id==edit.id).all()
+    for i in like:
+        db.session.delete(i)
+
     db.session.delete(edit)
     db.session.commit()
 
