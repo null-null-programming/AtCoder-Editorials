@@ -88,11 +88,17 @@
                 <form>
                     <button class="like_button btn btn-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
                 </form>
-                {%endif%} {%else%}
+                {%endif%}{%else%}
                 <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
                 <h5 class="col-1"></h5>
                 <img src={{edit.user_image_url}} alt='No Image' style="width:36px;height:36px;vertical-align:middle;">
                 <a href="/user/{{edit.user_id}}/1" class="h4" style="vertical-align:middle;">{{edit.username}}</a>
+                <h5 class="col-1"></h5>
+                {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
+                <form>
+                    <button class="delete_button btn btn-danger" name="delete_id" value={{edit.id}}>削除</button>
+                </form>
+                {%endif%}
                 </a>
             </div>
 
@@ -168,7 +174,21 @@
                 .fail(function() {
                     console.log('fail');
                 });
+        })
 
+        $('.delete_button').on('click', function() {
+            flag = window.confirm("本当に削除してもよろしいでしょうか？")
+            event.preventDefault();
+            if (flag === true) {
+                $.ajax({
+                    url: '/delete',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {
+                        id: $(this).val(),
+                    }
+                })
+            }
         })
     </script>
 </body>

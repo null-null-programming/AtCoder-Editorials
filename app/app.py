@@ -205,6 +205,13 @@ def like():
 
     return 'hoge'
 
+@app.route('/delete',methods=['POST'])
+def delete():
+    edit=db.session.query(Editorial).filter(Editorial.id==request.form['id']).first()
+    db.session.delete(edit)
+    db.session.commit()
+    return 'hoge'
+
 @app.errorhandler(401)
 def authentication_failed(error):
     return render_template('401.html'),401
