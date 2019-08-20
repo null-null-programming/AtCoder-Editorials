@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
 from rauth import OAuth1Service
-from config import app, db, service, login_manager,csrf
+from config import app, db, service, login_manager
 
 
 class User(UserMixin,db.Model):
@@ -188,9 +188,7 @@ def like():
     id=request.form['id']
     flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
-    user=db.session.query(User).filter(User.id==edit.id).first()
-
-    print(id,flag,edit,user)
+    user=db.session.query(User).filter(User.id==id).first()
 
     #いいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
@@ -206,6 +204,18 @@ def like():
     db.session.commit()
 
     return 'hoge'
+
+@app.errorhandler(401)
+def authentication_failed(error):
+    return render_template('401.html'),401
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'),404
+
+@app.errorhandler(500)
+def page_not_found(error):
+    return render_template('500.html'),500
 
 @login_manager.user_loader
 def load_user(id):
