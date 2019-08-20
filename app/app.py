@@ -103,15 +103,29 @@ def submit():
             return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
 
 
-@app.route('/user/<int:id>',methods=['GET'])
-def user(id):
-    return render_template('user.html')
+@app.route('/user/<int:id>/<int:page>',methods=['GET'])
+def user(id,page=1):
+    per_page=10
+
+    user=User.query.filter_by(id=id).first()
+    edit=Editorial.query.filter_by(user_id=id).paginate(page, per_page, error_out=False)
+
+    edit_num=Editorial.query.filter_by(user_id=id).all()
+    num=len(edit_num)
+
+    rank=1
+    all_edit=db.session.query(User).order_by(desc(User.like_sum)).all()
+    for i in range(0,len(all_edit)):
+        if all_edit[i].id==id:
+            rank=i+1
+            break
+
+    return render_template('user.html',user=user,edit=edit,num=num,rank=rank)
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
-    per_page = 50
+    per_page = 100
     users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
-
     return render_template('ranking.html',users=users,page=page,per_page=per_page)
 
 

@@ -24,7 +24,7 @@
                 <li class="nav-item"><a href="/search" class="nav-link">コンテスト</a></li>
                 <li class="nav-item active"><a href="/ranking/1" class="nav-link">ランキング</a></li>
                 {% if current_user.is_authenticated==True %}
-                <li class="nav-item"><a href="/user/{{current_user.id}}" class="nav-link">ユーザーページ</a></li>
+                <li class="nav-item"><a href="/user/{{current_user.id}}/1" class="nav-link">ユーザーページ</a></li>
                 {%endif%}
             </ul>
             {% if current_user.is_authenticated==False %}
@@ -38,16 +38,17 @@
                 <tr>
                     <th scope="col">順位</th>
                     <th scope="col">名前</th>
-                    <th scope="col">総いいね数</th>
+                    <th scope="col">いいね数</th>
                 </tr>
-            </thead {% for user in users.items%} <tbody>
-            <tr>
-                <th scope="row">{{loop.index+(page-1)*per_page}}</th>
-                <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> {{user.username}}
-                </td>
-                <td>{{user.like_sum}}</td>
-            </tr>
-            {%endfor%}
+            </thead> {% for user in users.items%}
+            <tbody>
+                <tr>
+                    <th scope="row">{{loop.index+(page-1)*per_page}}</th>
+                    <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> {{user.username}}
+                    </td>
+                    <td>{{user.like_sum}}</td>
+                </tr>
+                {%endfor%}
             </tbody>
 
         </table>

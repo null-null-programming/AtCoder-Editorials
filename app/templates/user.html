@@ -24,7 +24,7 @@
                 <li class="nav-item"><a href="/search" class="nav-link">コンテスト</a></li>
                 <li class="nav-item"><a href="/ranking/1" class="nav-link">ランキング</a></li>
                 {% if current_user.is_authenticated==True %}
-                <li class="nav-item"><a href="/user/{{current_user.id}}" class="nav-link">ユーザーページ</a></li>
+                <li class="nav-item"><a href="/user/{{current_user.id}}/1" class="nav-link">ユーザーページ</a></li>
                 {%endif%}
             </ul>
             {% if current_user.is_authenticated==False %}
@@ -32,6 +32,64 @@
             <span class="navbar-text"><a href="/logout" class="btn btn-danger">ログアウト</a></span> {%endif%}
         </div>
     </nav>
+
+    <div class="container-fluid">
+        <div class="jumbotron jumbotron-fluid text-dark">
+            <h1>{{user.username}}</h1>
+            <div>
+                <h4>登録日時：{{user.date_published}}</h4>
+            </div>
+            <div>
+                <h4>順位　　：{{rank}}位</h4>
+            </div>
+            <div>
+                <h4> いいね数 :{{user.like_sum}}</h4>
+            </div>
+            <div>
+                <h4> 投稿数　 :{{num}}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        {%for e in edit.items %}
+        <div id="editorial-card">
+            <div class="card col-6 border-0">
+                <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
+                    {{e.title}}
+                </h4>
+
+                <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                    {% if e.url!=None%}
+                    <a href={{edit.url}}>{{e.url}}</a> {%endif%}
+                </div>
+
+                <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                    {% autoescape false %} {%if e.description!=None%}
+                    <br>
+                    <p>{{e.description}}</p>
+                    {%endif%} {% endautoescape %}
+                </div>
+            </div>
+            <br>
+            <br> {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="container-fluid">
+        <ul class="pagination">
+            {% if edit.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=current_user.id)}}">前のページ</a>
+            </li>
+            {% endif %} {% if edit.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=current_user.id)}}">次のページ</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
