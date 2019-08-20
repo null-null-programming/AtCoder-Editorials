@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
 from rauth import OAuth1Service
-from config import app, db, service, login_manager
+from config import app, db, service, login_manager,csrf
 
 
 class User(UserMixin,db.Model):
