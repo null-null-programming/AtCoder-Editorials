@@ -5,7 +5,7 @@ from flask_login import UserMixin,LoginManager,login_user,logout_user,current_us
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
 from rauth import OAuth1Service
-import ossaudiodev
+import os
 
 app=Flask(__name__)
 app.secret_key=os.environ['SECRET_KEY']
