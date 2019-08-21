@@ -44,7 +44,7 @@
             <tbody>
                 <tr>
                     <th scope="row">{{rank[user.like_sum]}}</th>
-                    <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> <a href="/user/{{user.id}}/1">{{user.username}}</a></td>
+                    <td><img src={{user.user_image_url}} alt='' style="width:36px;height:36px;vertical-align:middle;"> <a href="/user/{{user.id}}/1" class="text-dark">{{user.username}}</a></td>
                     <td>{{user.like_sum}}</td>
                 </tr>
                 {%endfor%}
