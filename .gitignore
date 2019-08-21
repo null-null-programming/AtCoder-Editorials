@@ -128,6 +128,5 @@ bin/
 include/
 *.cfg
 migrations/
-config.py
 lib64
 favicon.ico
