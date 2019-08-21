@@ -114,20 +114,40 @@ def user(id,page=1):
     edit_num=Editorial.query.filter_by(user_id=id).all()
     num=len(edit_num)
 
+    like_set=set([])
+    users=db.session.query(User).all()
+    for  i in users:
+        like_set.add(i.like_sum)
+    
+    like_set=list(like_set)
+    like_set=sorted(like_set,reverse=True)
+    
     rank=1
-    all_edit=db.session.query(User).order_by(desc(User.like_sum)).all()
-    for i in range(0,len(all_edit)):
-        if all_edit[i].id==id:
+    for i in range(0,len(like_set)):
+        if like_set[i]==user.like_sum:
             rank=i+1
             break
-
+    
     return render_template('user.html',user=user,edit=edit,num=num,rank=rank)
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
     per_page = 100
     users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
-    return render_template('ranking.html',users=users,page=page,per_page=per_page)
+
+    rank=dict({})
+    like_set=set([])
+    user=db.session.query(User).all()
+    for  i in user:
+        like_set.add(i.like_sum)
+    
+    like_set=list(like_set)
+    like_set=sorted(like_set,reverse=True)
+    
+    for i in range(0,len(like_set)):
+        rank[like_set[i]]=i+1
+
+    return render_template('ranking.html',users=users,page=page,per_page=per_page,rank=rank)
 
 
 @app.route('/logout')
