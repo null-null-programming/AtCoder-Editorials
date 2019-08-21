@@ -37,7 +37,7 @@
         <div class="jumbotron jumbotron-fluid text-dark">
             <h1>{{user.username}}</h1>
             <div>
-                <h4>登録日時：{{user.date_published}}</h4>
+                <h4>登録日時：{{date_published}}</h4>
             </div>
             <div>
                 <h4>順位　　：{{rank}}位</h4>
@@ -50,31 +50,33 @@
             </div>
         </div>
     </div>
-    <h3>投稿一覧</h3>
-    <div>
-        {%for e in edit.items %}
-        <div id="editorial-card">
-            <div class="card col-6 border-0">
-                <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
-                    {{e.title}}
-                </h4>
+    <div class="container-fluid">
+        <h3>投稿一覧</h3>
+        <div>
+            {%for e in edit.items %}
+            <div id="editorial-card">
+                <div class="card col-6 border-0">
+                    <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
+                        {{e.title}}
+                    </h4>
 
-                <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
-                    {% if e.url!=None%}
-                    <a href={{edit.url}}>{{e.url}}</a> {%endif%}
-                </div>
+                    <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                        {% if e.url!=None%}
+                        <a href={{edit.url}}>{{e.url}}</a> {%endif%}
+                    </div>
 
-                <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
-                    {% autoescape false %} {%if e.description!=None%}
-                    <br>
-                    <p>{{e.description}}</p>
-                    {%endif%} {% endautoescape %}
+                    <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                        {% autoescape false %} {%if e.description!=None%}
+                        <br>
+                        <p>{{e.description}}</p>
+                        {%endif%} {% endautoescape %}
+                    </div>
                 </div>
+                <br>
+                <br> {% endfor %}
             </div>
-            <br>
-            <br> {% endfor %}
-        </div>
 
+        </div>
     </div>
 
     <div class="container-fluid">

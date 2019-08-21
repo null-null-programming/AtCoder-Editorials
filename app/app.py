@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
 from rauth import OAuth1Service
-from config import app, db, service, login_manager
+from config import app, db, service, login_manager,csrf
 
 
 class User(UserMixin,db.Model):
@@ -43,7 +43,6 @@ def _normalize_contestname(contestname):
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/search', methods=['GET'])
 def contest_search():
@@ -121,14 +120,17 @@ def user(id,page=1):
     
     like_set=list(like_set)
     like_set=sorted(like_set,reverse=True)
-    
+
     rank=1
     for i in range(0,len(like_set)):
         if like_set[i]==user.like_sum:
             rank=i+1
             break
     
-    return render_template('user.html',user=user,edit=edit,num=num,rank=rank)
+    date_published=str(user.date_published)
+    date_published=date_published.split(' ')[0]
+
+    return render_template('user.html',user=user,edit=edit,num=num,rank=rank,date_published=date_published)
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
