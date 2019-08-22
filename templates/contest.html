@@ -70,7 +70,7 @@
     <br> {% if current_user.is_authenticated== True %}
     <div id="submit-card">
 
-        <div class="card col-6 border-0">
+        <div class="card col-6 border-0" style="cursor: pointer;">
             <h4 class="card-header text-white bg-info col-10" data-toggle="collapse" data-target="#sub1">
                 投稿する
             </h4>
@@ -129,7 +129,7 @@
                 </a>
             </div>
 
-            <div class="card col-6 border-0">
+            <div class="card col-6 border-0" style="cursor: pointer;">
                 <h4 class="card-header text-light bg-light text-dark col-10" data-toggle="collapse" data-target="#edi{{loop.index}}">
                     {{edit.title}}
                 </h4>
