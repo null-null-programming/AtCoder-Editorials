@@ -129,4 +129,3 @@ include/
 *.cfg
 migrations/
 lib64
-favicon.ico
