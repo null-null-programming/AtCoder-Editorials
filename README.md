@@ -1,6 +1,6 @@
 # AtCoderEditorials
 
-　AtCoderのWebアプリです。
+　AtCoderの非公式Webアプリです。
 
 # 説明
 
