@@ -174,7 +174,66 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-    <script src="static/script.js">
+
+    <script type="text/javascript">
+        $('.like_button').on('click', function() {
+            $(this).toggleClass('active');
+
+            if ($(this).hasClass('active')) {
+                var text = $(this).data('btn btn-info');
+            } else {
+                var text = $(this).data('btn btnconsole.log($(this).val);-outline-info');
+            }
+
+            $(this).html(text);
+
+            event.preventDefault();
+            $.ajax({
+                    url: '/like',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {
+                        id: $(this).val(),
+                    },
+                }).done(function(response) {
+                    console.log('success');
+                })
+                .fail(function() {
+                    console.log('fail');
+                });
+        })
+
+        $('.delete_button').on('click', function() {
+            flag = window.confirm("本当に削除してもよろしいでしょうか？")
+            event.preventDefault();
+            if (flag === true) {
+                $.ajax({
+                    url: '/delete',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {
+                        id: $(this).val(),
+                    }
+                })
+            }
+        })
+
+        //input内でのEnter無効化
+        $(function() {
+            $(document).on("keypress", "input:not(.allow_submit)", function(event) {
+                return event.which !== 13;
+            });
+        });
+
+        var csrftoken = $('meta[name=csrf-token]').attr('content')
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                }
+            }
+        })
     </script>
 </body>
 
