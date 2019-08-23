@@ -58,9 +58,15 @@
         </div>
     </nav>
 
+    {%if contestname == None%}
+    <div class="container-fluid">
+        <h1>{{request.args.get('contestname','')}}</h1>
+    </div>
+    {%else%}
     <div class="container-fluid">
         <h1>{{contestname}}</h1>
     </div>
+    {%endif%}
 
 
     <br> {% if current_user.is_authenticated== True %}
@@ -153,14 +159,16 @@
     <div class="container-fluid h4">
 
         <ul class="pagination">
-            {% if editorials.has_prev %}
-            <li class="page-item">
-                <a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num)}}">
-
-                    << 前のページ</a>
-            </li> {% endif %}{% if editorials.has_next %}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num)}}">
-
+            {% if editorials.has_prev %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
+        {%else%}
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
+        {%endif%}
+        << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
+                {%else%}
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
+        {%endif%}
          次のページ >></a></li>{% endif %}
         </ul>
     </div>
