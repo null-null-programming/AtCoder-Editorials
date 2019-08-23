@@ -121,7 +121,9 @@
         });
 
         function check() {
-            document.form.action = "/search/contest/" + document.form.value + "/1";
+            let contest_name = document.getElementById('autocomplete_search').innerText;
+            document.form.action = "/search/contest/" + contest_name + "/1";
+            console.log(document.form.value)
             document.form.submit();
         }
     </script>
