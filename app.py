@@ -51,7 +51,7 @@ def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest/<str:contestname>/<int:page>', methods=['GET','POST'])
+@app.route('/search/contest/<contestname>/<int:page>', methods=['GET','POST'])
 def contest_get(contestname,page=1):
     contestname = _normalize_contestname(contestname)
 
