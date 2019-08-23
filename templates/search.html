@@ -104,12 +104,6 @@
                 delay: 100,
                 minLength: 2,
                 appendTo: "menu",
-
-                //候補をクリックすることでsubmitできるようにする
-                select: function(event, ui) {
-                    $("#autocomplete_search").val(ui.item.label);
-                    $("#search").submit();
-                }
             });
 
             //input内でのEnter無効化
@@ -118,6 +112,7 @@
                     return event.which !== 13;
                 });
             });
+
         })();
     </script>
 </body>
