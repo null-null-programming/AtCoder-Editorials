@@ -113,18 +113,18 @@ def user(id,page=1):
     edit_num=Editorial.query.filter_by(user_id=id).all()
     num=len(edit_num)
 
-    rank_list=dict({})
-    user=db.session.query(User).order_by(desc(User.like_sum)).all()
+    rank_dict=dict({})
+    user_list=db.session.query(User).order_by(desc(User.like_sum)).all()
 
-    for  i in user:
-        rank_list[i.like_sum]=-1
+    for  i in user_list:
+        rank_dict[i.like_sum]=-1
         
-    for i in range(0,len(user)):
-        if rank_list[user[i].like_sum]!=-1:
+    for i in range(0,len(user_list)):
+        if rank_dict[user_list[i].like_sum]!=-1:
             continue
         else:
-            rank_list[user[i].like_sum]=i+1
-    rank=rank_list[user.like_sum]
+            rank_dict[user_list[i].like_sum]=i+1
+    rank=rank_dict[user.like_sum]
     
     date_published=str(user.date_published)
     date_published=date_published.split(' ')[0]
