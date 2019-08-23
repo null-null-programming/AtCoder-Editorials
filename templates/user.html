@@ -73,10 +73,12 @@
                 <h4> 投稿数　 :{{num}}</h4>
             </div>
             <div>
+                {%if current_user.is_authenticated==True%}
                 <div class="twitter">
                     <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{rank}}位になりました！" data-url="https://atcoder-editorials.herokuapp.com/user/{{user.id}}/1" data-lang="ja">
                     </a>
                 </div>
+                {%endif%}
             </div>
         </div>
     </div>
