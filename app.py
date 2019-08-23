@@ -138,16 +138,15 @@ def ranking(page=1):
     users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
 
     rank=dict({})
-    like_set=set([])
-    user=db.session.query(User).all()
+    user=db.session.query(User).order_by(desc(User.like_sum)).all()
     for  i in user:
-        like_set.add(i.like_sum)
+        rank[i.like_sum]=-1
     
-    like_set=list(like_set)
-    like_set=sorted(like_set,reverse=True)
-    
-    for i in range(0,len(like_set)):
-        rank[like_set[i]]=i+1
+    for i in range(0,len(user)):
+        if rank[user[i].like_sum]!=-1:
+            continue
+        else:
+            rank[user[i].like_sum]=i+1
 
     return render_template('ranking.html',users=users,page=page,per_page=per_page,rank=rank)
 
