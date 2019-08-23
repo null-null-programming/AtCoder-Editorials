@@ -83,7 +83,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js " integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin=" anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0 "></script>
     <script type="text/javascript ">
-        (async function() {
+        (async function($) {
 
             const contestName = [];
             $.ajax({
@@ -112,7 +112,7 @@
                     $("#search ").submit();
                 }
             });
-        })();
+        })(jQuery);
 
         //input内でのEnter無効化
         $(function() {
@@ -121,13 +121,13 @@
             });
         });
 
-        })
         
         var app= new Vue({
             el:'#app',
             data:{
                 contest_name:'huga'
             }
+        )}
     </script>
 </body>
 
