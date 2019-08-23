@@ -7,7 +7,7 @@ from datetime import datetime
 from rauth import OAuth1Service
 from config import app, db, service, login_manager,csrf
 
-
+#ユーザー情報
 class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True)
@@ -17,7 +17,7 @@ class User(UserMixin,db.Model):
     twitter_id = db.Column(db.String(64), nullable=False, unique=True)
     like_sum=db.Column(db.Integer)
 
-
+#解法情報
 class Editorial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64))
@@ -29,11 +29,13 @@ class Editorial(db.Model):
     user_image_url = db.Column(db.String(1024), index=True)
     user_id=db.Column(db.Integer)
 
+#いいね情報
 class Like(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     user_id=db.Column(db.Integer)
     edit_id=db.Column(db.Integer)
 
+#コンテスト名に含まれる空白などを取り除く
 def _normalize_contestname(contestname):
     if isinstance(contestname, str):
         contestname = contestname.strip()
@@ -56,15 +58,15 @@ def contest_get(page=1):
     if contestname==None:
         contestname=request.args.get('contestname','')
 
+    #ページネーション
     per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
-    print(type(editorials))
 
+    #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
         flag={}
         for edit in editorials.items:
             like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
-            print(like)
             if like:
                 flag[edit.id]=True
             else:
@@ -77,6 +79,7 @@ def contest_get(page=1):
 
 @app.route('/submited', methods=['POST'])
 def submit():
+    #DBに挿入する解法情報
     params = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
@@ -90,6 +93,7 @@ def submit():
 
     params['description']=params['description'].replace('\r\n','<br>')
 
+    #必要量記入されているかチェック
     if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
           and params['title'] is not None and params['title'] is not '':
         newEditorial = Editorial(**params)
@@ -105,14 +109,17 @@ def submit():
 
 @app.route('/user/<int:id>/<int:page>',methods=['GET'])
 def user(id,page=1):
-    per_page=10
-
     user=User.query.filter_by(id=id).first()
+
+    #ページネーション
+    per_page=10
     edit=Editorial.query.filter_by(user_id=id).paginate(page, per_page, error_out=False)
 
+    #投稿数
     edit_num=Editorial.query.filter_by(user_id=id).all()
     num=len(edit_num)
 
+    #順位計算（繰り上がり処理付き）
     rank_dict=dict({})
     user_list=db.session.query(User).order_by(desc(User.like_sum)).all()
 
@@ -126,6 +133,7 @@ def user(id,page=1):
             rank_dict[user_list[i].like_sum]=i+1
     rank=rank_dict[user.like_sum]
     
+    #登録日(何時何分何秒は除いている)
     date_published=str(user.date_published)
     date_published=date_published.split(' ')[0]
 
@@ -133,9 +141,11 @@ def user(id,page=1):
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
+    #ページネーション
     per_page = 100
     users=db.session.query(User).order_by(desc(User.like_sum)).paginate(page, per_page, error_out=False)
 
+    #順位計算（繰り上がり処理付き）
     rank=dict({})
     user=db.session.query(User).order_by(desc(User.like_sum)).all()
     for  i in user:
@@ -149,13 +159,13 @@ def ranking(page=1):
 
     return render_template('ranking.html',users=users,page=page,per_page=per_page,rank=rank)
 
-
+#Twitterログアウト処理
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
+#Twitterログイン処理
 @app.route('/oauth/twitter')
 def oauth_authorize():
     if not current_user.is_anonymous:
@@ -204,20 +214,29 @@ def oauth_callback():
     login_user(user, True)
     return redirect(url_for('index'))
 
+#いいね処理
 @app.route('/like',methods=['POST'])
 def like():
     id=request.form['id']
+
+    #いいねを既にされているかどうか
     flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
+    #解法情報
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
+    #ユーザー情報
     user=db.session.query(User).filter(User.id==edit.user_id).first()
 
-    #いいねされていた場合
+    #既にいいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
     if flag!=None:
+        #解法情報のいいね数と投稿者の総いいね数を減らす
         edit.like-=1
         user.like_sum-=1
         db.session.delete(flag)
+
+    #まだいいねされていなかった場合
     else:
+        #解法情報のいいね数と投稿者の総いいね数を増やす
         edit.like+=1
         user.like_sum+=1
         db.session.add(newLike)
@@ -226,13 +245,16 @@ def like():
 
     return 'hoge'
 
+#解法消去処理
 @app.route('/delete',methods=['POST'])
 def delete():
     edit=db.session.query(Editorial).filter(Editorial.id==request.form['id']).first()
 
+    #投稿者の総いいね数から、消去する解法のいいね数を減らす
     user=db.session.query(User).filter(User.id==edit.user_id).first()
     user.like_sum-=edit.like
 
+    #いいねテーブルから消去する記事の情報を全て消す
     like=db.session.query(Like).filter(Like.edit_id==edit.id).all()
     for i in like:
         db.session.delete(i)
@@ -242,6 +264,7 @@ def delete():
 
     return 'hoge'
 
+#エラー処理
 @app.errorhandler(401)
 def authentication_failed(error):
     return render_template('401.html'),401
