@@ -51,12 +51,15 @@ def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest/<contestname>/<int:page>', methods=['GET','POST'])
-def contest_get(contestname,page=1):
-    contestname = _normalize_contestname(contestname)
+@app.route('/search/contest/<int:page>', methods=['GET','POST'])
+def contest_get(page=1):
+    contestname = _normalize_contestname(request.form.get('contestname'))
+    
+    if contestname==None:
+        contestname=request.args.get('contestname','')
 
     #ページネーション
-    per_page = 1
+    per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
 
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
@@ -156,7 +159,7 @@ def ranking(page=1):
 
     return render_template('ranking.html',users=users,page=page,per_page=per_page,rank=rank)
 
-#Twitterログアウト処理
+#Twitterログアウト
 @app.route('/logout')
 def logout():
     logout_user()
