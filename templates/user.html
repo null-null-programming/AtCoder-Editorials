@@ -115,11 +115,11 @@
         <ul class="pagination">
             {% if edit.has_prev %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=current_user.id)}}">前のページ</a>
+                <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=user.id)}}">前のページ</a>
             </li>
             {% endif %} {% if edit.has_next %}
             <li class="page-item">
-                <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=current_user.id)}}">次のページ</a>
+                <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=user.id)}}">次のページ</a>
             </li>
             {% endif %}
         </ul>
