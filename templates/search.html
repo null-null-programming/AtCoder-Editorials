@@ -64,9 +64,6 @@
                 <h4 class="display-4">コンテスト検索</h4>
                 <br>
                 <h5 class="text-muted">解法の見たいコンテスト名を入力し、下の候補から選択して下さい。</h5>
-                <h4>更新にかかる時間が想定していたよりも長いので、手動入力を出来るようにしました。<br> キーワードは「第一回日本最強プログラマー学生選手権-予選-」で検索お願いします。
-                    <br> （一字一句間違えないように注意して下さい！すみません！）
-                </h4>
             </div>
         </div>
 
@@ -100,6 +97,8 @@
                 }
             });
 
+            contestName.push('第一回日本最強プログラマー学生選手権-予選-');
+
             //検索候補を表示する。
             $('#autocomplete_search').autocomplete({
                 source: contestName,
@@ -113,6 +112,13 @@
                     $("#autocomplete_search").val(ui.item.label);
                     $("#search").submit();
                 }
+            });
+
+            //input内でのEnter無効化
+            $(function() {
+                $(document).on("keypress", "input:not(.allow_submit)", function(event) {
+                    return event.which !== 13;
+                });
             });
 
             //日本語入力をスタートしたら無効化
