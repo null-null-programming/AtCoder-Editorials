@@ -87,7 +87,7 @@
             const contestName = [];
             $.ajax({
                 type: 'GET',
-                url: 'https://kenkoooo.com/atcoder/resources/contests.json',
+                url: 'https://kenkoooo.com/atcoder/resources/problems.json',
                 dataType: 'json',
                 success: function(json) {
                     var len = json.length;
@@ -111,6 +111,32 @@
                     $("#search").submit();
                 }
             });
+
+            //検索候補を表示する。
+            $('#autocomplete_search').autocomplete({
+                source: contestName,
+                autoFocus: true,
+                delay: 100,
+                minLength: 2,
+                appendTo: "menu",
+
+                //候補をクリックすることでsubmitできるようにする
+                select: function(event, ui) {
+                    $("#autocomplete_search").val(ui.item.label);
+                    $("#search").submit();
+                }
+            });
+
+            //日本語入力をスタートしたら無効化
+            $('#autocomplete_search').on('compositionstart', function() {
+                $('#autocomplete_search').autocomplete('disable');
+            });
+
+            //日本語入力が確定したら有効化
+            $('#autocomplete_search').on('compositionend', function() {
+                $('#autocomplete_search').autocomplete('enable').autocomplete('search');
+            });
+
 
             //input内でのEnter無効化
             $(function() {
