@@ -89,50 +89,65 @@
             {%for e in edit.items %}
             <div id="editorial-card">
                 <br>
-                <h4>{{e.contestname}}</h4>
-                <div class="card col-6 border-0" style="cursor: pointer;">
-                    <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
-                        {{e.title}}
-                    </h4>
-
-                    <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
-                        {% if e.url!=None%}
-                        <a href={{e.url}}>{{e.url}}</a> {%endif%}
-                    </div>
-
-                    <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
-                        {% autoescape false %} {%if e.description!=None%}
-                        <br>
-                        <p>{{e.description}}</p>
-                        {%endif%} {% endautoescape %}
-                    </div>
+                <div class="row">
+                    {%if current_user.is_authenticated==True%} {% if flag[e.id]==False%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                        <button class="like_button btn btn-outline-info" name="id" value={{edit.id}}>{{e.like}}いいね</button>
+                    </form>
+                    {%else%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                        <button class="like_button btn btn-info" name="id" value={{edit.id}}>{{e.like}}いいね</button>
+                    </form>
+                    {%endif%}{%endif%}
+                    <h4>{{e.contestname}}</h4>
                 </div>
-                <br>
-                <br> {% endfor %}
+
+                <div class=" row container-fluid">
+                    <div class="card col-6 border-0" style="cursor: pointer;">
+                        <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
+                            {{e.title}}
+                        </h4>
+
+                        <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                            {% if e.url!=None%}
+                            <a href={{e.url}}>{{e.url}}</a> {%endif%}
+                        </div>
+
+                        <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                            {% autoescape false %} {%if e.description!=None%}
+                            <br>
+                            <p>{{e.description}}</p>
+                            {%endif%} {% endautoescape %}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
             </div>
-
+            {% endfor %}
         </div>
-    </div>
 
-    <div class="container-fluid">
-        <ul class="pagination">
-            {% if edit.has_prev %}
-            <li class="page-item">
-                <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=user.id)}}">前のページ</a>
-            </li>
-            {% endif %} {% if edit.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=user.id)}}">次のページ</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
+        <div class="container-fluid">
+            <ul class="pagination">
+                {% if edit.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=user.id)}}">前のページ</a>
+                </li>
+                {% endif %} {% if edit.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=user.id)}}">次のページ</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 
 

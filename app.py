@@ -115,8 +115,18 @@ def user(id,page=1):
     edit=Editorial.query.filter_by(user_id=id).paginate(page, per_page, error_out=False)
 
     #投稿数
-    edit_num=Editorial.query.filter_by(user_id=id).all()
-    num=len(edit_num)
+    editorials=Editorial.query.filter_by(user_id=id).all()
+    num=len(editorials)
+
+    flag={}
+    #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
+    if current_user.is_authenticated==True:
+        for edit in editorials.items:
+            like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
+            if like:
+                flag[edit.id]=True
+            else:
+                flag[edit.id]=False
 
     #順位計算（繰り上がり処理付き）
     rank_dict=dict({})
@@ -136,7 +146,7 @@ def user(id,page=1):
     date_published=str(user.date_published)
     date_published=date_published.split(' ')[0]
 
-    return render_template('user.html',user=user,edit=edit,num=num,rank=rank,date_published=date_published)
+    return render_template('user.html',user=user,edit=edit,num=num,rank=rank,flag=flag,date_published=date_published)
 
 @app.route('/ranking/<int:page>')
 def ranking(page=1):
