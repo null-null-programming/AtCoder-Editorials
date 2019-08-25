@@ -110,7 +110,7 @@
                 select: function(event, ui) {
                     $("#autocomplete_search").val(ui.item.label);
 
-                    var url = '/search/contest/' + ui.item.label + '/1'
+                    var url = '/search/' + ui.item.label + '/1'
 
                     $('form').attr('action', url)
                     $("#search").submit();
