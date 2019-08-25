@@ -61,9 +61,10 @@
     <div class="container-fluid">
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h4 class="display-4">コンテスト検索</h4>
+                <h4 class="display-4">問題名検索</h4>
                 <br>
-                <h5 class="text-muted">解法の見たいコンテスト名を入力し、下の候補から選択して下さい。<br> Google Chromeで検索障害が発生していることお詫び申し上げます。</h5>
+                <h5 class="text-muted">解法の見たい問題名を入力し、下の候補から選択して下さい。<br> 検索方法がコンテスト名から問題名に変更されました。
+                </h5>
             </div>
         </div>
 
@@ -71,7 +72,7 @@
 
         <form id="search" method="POST" action="">
             <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-            <input id="autocomplete_search" placeholder="コンテスト名" style="width:600px" name="contestname" type="text" />
+            <input id="autocomplete_search" placeholder="問題名" style="width:600px" name="contestname" type="text" />
         </form>
 
 
@@ -88,7 +89,7 @@
             const contestName = [];
             $.ajax({
                 type: 'GET',
-                url: '/getName',
+                url: 'https://kenkoooo.com/atcoder/resources/contests.json',
                 dataType: 'json',
                 success: function(json) {
                     var len = json.length;
