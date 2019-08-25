@@ -87,22 +87,16 @@
 
             const contestName = [];
             $.ajax({
-                    type: 'GET',
-                    url: '/getName',
-                    dataType: 'json',
-                    success: function(json) {
-                        console.log(json)
-                        var len = json.length;
-                        for (var i = 0; i < len; i++) {
-                            contestName.push(json[i].title);
-                        }
+                type: 'GET',
+                url: 'https://kenkoooo.com/atcoder/resources/contests.json',
+                dataType: 'json',
+                success: function(json) {
+                    var len = json.length;
+                    for (var i = 0; i < len; i++) {
+                        contestName.push(json[i].title);
                     }
-                }).done(function() {
-                    console.log('success');
-                })
-                .fail(function() {
-                    console.log('fail');
-                });
+                }
+            });
 
             //検索候補を表示する。
             $('#autocomplete_search').autocomplete({
