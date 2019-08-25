@@ -123,6 +123,11 @@
                 <a href="/user/{{edit.user_id}}/1" class="h4 text-dark" style="vertical-align:middle;">{{edit.username}}</a>
                 <h5 class="col-1"></h5>
                 {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
+                <div class="twitter">
+                    <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{contestname}}の解法を投稿しました！" data-url="https://atcoder-editorials.herokuapp.com/search/{{contestname}}/1" data-lang="ja">
+                    </a>
+                </div>
+                <h5 class="col-1"></h5>
                 <form>
                     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
                     <button class="delete_button btn" style="color:tomato;" name="delete_id" value={{edit.id}}>削除</button>
