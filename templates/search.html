@@ -63,13 +63,13 @@
             <div class="container">
                 <h4 class="display-4">コンテスト検索</h4>
                 <br>
-                <h5 class="text-muted">解法の見たいコンテスト名を入力し、下の候補から選択して下さい。</h5>
+                <h5 class="text-muted">解法の見たいコンテスト名を入力し、下の候補から選択して下さい。<br> Google Chromeで検索障害が発生していることお詫び申し上げます。</h5>
             </div>
         </div>
 
         <br>
 
-        <form id="search" method="POST" action="/search/contest/1">
+        <form id="search" method="POST" action="">
             <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
             <input id="autocomplete_search" placeholder="コンテスト名" style="width:600px" name="contestname" type="text" />
         </form>
@@ -81,6 +81,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI=" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
         (async function() {
 
@@ -110,6 +111,10 @@
                 //候補をクリックすることでsubmitできるようにする
                 select: function(event, ui) {
                     $("#autocomplete_search").val(ui.item.label);
+
+                    var url = '/search/contest/' + ui.item.label + '/1'
+
+                    $('form').attr('action', url)
                     $("#search").submit();
                 }
             });

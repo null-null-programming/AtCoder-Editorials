@@ -51,12 +51,9 @@ def contest_search():
     return render_template('search.html')
 
 
-@app.route('/search/contest/<int:page>', methods=['GET','POST'])
-def contest_get(page=1):
-    contestname = _normalize_contestname(request.form.get('contestname'))
-    
-    if contestname==None:
-        contestname=request.args.get('contestname','')
+@app.route('/search/contest/<contestname>/<int:page>', methods=['GET','POST'])
+def contest_get(contestname,page=1):
+    contestname = _normalize_contestname(contestname)
 
     #ページネーション
     per_page = 10
