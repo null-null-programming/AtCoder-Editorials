@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,url_for, redirect,session
+from flask import Flask, render_template, request,url_for, redirect,session,jsonify,abort, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from flask_migrate import Migrate
@@ -114,19 +114,9 @@ def user(id,page=1):
     per_page=10
     edit=Editorial.query.filter_by(user_id=id).paginate(page, per_page, error_out=False)
 
-    editorials=Editorial.query.filter_by(user_id=id).all()
     #投稿数
-    num=len(editorials)
-
-    #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
-    if current_user.is_authenticated==True:
-        flag={}
-        for edit in editorials.items:
-            like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
-            if like:
-                flag[edit.id]=True
-            else:
-                flag[edit.id]=False
+    edit_num=Editorial.query.filter_by(user_id=id).all()
+    num=len(edit_num)
 
     #順位計算（繰り上がり処理付き）
     rank_dict=dict({})
