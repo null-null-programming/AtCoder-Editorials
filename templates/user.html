@@ -86,7 +86,22 @@
         <h3>投稿一覧</h3>
         <div>
             {%for e in edit.items %}
-            <h4>{{e.contestname}}</h4>
+            <div class="row">
+                {%if current_user.is_authenticated==True%} {% if flag[edit.id]==False%}
+                <form>
+                    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                    <button class="like_button btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
+                </form>
+                {%else%}
+                <form>
+                    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                    <button class="like_button btn btn-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
+                </form>
+                {%endif%} {%else%}
+                <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
+                <h4>{{e.contestname}}</h4>
+            </div>
+
             <div id="editorial-card">
                 <div class="card col-6 border-0" style="cursor: pointer;">
                     <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
