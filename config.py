@@ -7,11 +7,13 @@ from flask_wtf.csrf import CSRFProtect
 from rauth import OAuth1Service
 from dotenv import load_dotenv
 from os.path import join, dirname
+from flask_cors import CORS 
 import os
 
 load_dotenv('.env')
 
 app=Flask(__name__)
+CORS(app)
 app.secret_key=os.environ['SECRET_KEY']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.config['SQLALCHEMY_DATABASE_URI']=os.environ['SQLALCHEMY_DATABASE_URI']
