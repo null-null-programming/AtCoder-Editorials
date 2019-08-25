@@ -161,10 +161,12 @@
 
                 $(this).html(text);
 
+                console.log($(this).val)
+
                 event.preventDefault();
                 $.ajax({
                         url: '/like',
-                        type: 'get',
+                        type: 'post',
                         dataType: 'text',
                         data: {
                             id: $(this).val(),
