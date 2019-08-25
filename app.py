@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request,url_for, redirect,session
+from flask import Flask, render_template, request,url_for, redirect,session,jsonify,abort, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from flask_migrate import Migrate
 from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
 from datetime import datetime
 from rauth import OAuth1Service
+import requests
+import json
 from config import app, db, service, login_manager,csrf
 
 #ユーザー情報
@@ -260,6 +262,12 @@ def delete():
     db.session.commit()
 
     return 'hoge'
+
+@app.route('/getName',methods=['GET'])
+def getName():
+    res=requests.get('https://kenkoooo.com/atcoder/resources/problems.json')
+    return jsonify(res.json())
+
 
 #エラー処理
 @app.errorhandler(401)
