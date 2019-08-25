@@ -109,8 +109,9 @@
                 //候補をクリックすることでsubmitできるようにする
                 select: function(event, ui) {
                     $("#autocomplete_search").val(ui.item.label);
-                    var preurl = '/search/contest/' + ui.item.label + '/1'
-                    var url = preurl.replace(/\s+/g, "");
+
+                    var url = '/search/contest/' + ui.item.label + '/1'
+
                     $('form').attr('action', url)
                     $("#search").submit();
                 }
