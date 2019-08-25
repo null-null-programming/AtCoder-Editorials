@@ -149,6 +149,34 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            $('.like_button').on('click', function() {
+                $(this).toggleClass('active');
+
+                if ($(this).hasClass('active')) {
+                    var text = $(this).data('btn btn-info');
+                } else {
+                    var text = $(this).data('btn btnconsole.log($(this).val);-outline-info');
+                }
+
+                $(this).html(text);
+
+                event.preventDefault();
+                $.ajax({
+                        url: '/like',
+                        type: 'post',
+                        dataType: 'text',
+                        data: {
+                            id: $(this).val(),
+                        },
+                    }).done(function(response) {
+                        console.log('success');
+                    })
+                    .fail(function() {
+                        console.log('fail');
+                    });
+            })
+        </script>
 </body>
 
 
