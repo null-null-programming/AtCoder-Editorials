@@ -88,7 +88,7 @@
             const contestName = [];
             $.ajax({
                 type: 'GET',
-                url: 'https://kenkoooo.com/atcoder/resources/contests.json',
+                url: '/getName',
                 dataType: 'json',
                 success: function(json) {
                     var len = json.length;
