@@ -121,7 +121,7 @@ def user(id,page=1):
     flag={}
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
-        for edit in editorials.items:
+        for edit in editorials:
             like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
             if like:
                 flag[edit.id]=True
