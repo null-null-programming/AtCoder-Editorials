@@ -88,7 +88,7 @@
             const contestName = [];
             $.ajax({
                 type: 'GET',
-                url: '/getName',
+                url: 'https://kenkoooo.com/atcoder/resources/contests.json',
                 dataType: 'json',
                 success: function(json) {
                     var len = json.length;
@@ -110,7 +110,7 @@
                 select: function(event, ui) {
                     $("#autocomplete_search").val(ui.item.label);
 
-                    var url = '/search/' + ui.item.label + '/1'
+                    var url = '/search' + ui.item.label + '/1'
 
                     $('form').attr('action', url)
                     $("#search").submit();
