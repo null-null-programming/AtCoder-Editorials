@@ -121,12 +121,12 @@ def user(id,page=1):
     flag={}
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
-        for edit in editorials:
-            like=db.session.query(Like).filter(Like.edit_id==edit.id,Like.user_id==current_user.id).first()
+        for edit_ in editorials:
+            like=db.session.query(Like).filter(Like.edit_id==edit_.id,Like.user_id==current_user.id).first()
             if like:
-                flag[edit.id]=True
+                flag[edit_.id]=True
             else:
-                flag[edit.id]=False
+                flag[edit_.id]=False
 
     #順位計算（繰り上がり処理付き）
     rank_dict=dict({})
