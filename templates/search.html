@@ -80,7 +80,7 @@
                 <tr>
                     <th scope="row">{{loop.index}}</th>
                     <td>
-                        <a href="/search/{{problem}}/1" method="POST">{{problem}}</a>
+                        <a href="/search/{{problem[1]}}/1?contestname={{problem[0]}}" method="POST">{{problem[0]}}</a>
                     </td>
                 </tr>
                 {%endfor%}
@@ -120,7 +120,7 @@
                 success: function(json) {
                     var len = json.length;
                     for (var i = 0; i < len; i++) {
-                        contestName.push(json[i].title);
+                        contestName.push(json[i].id + ":" + json[i].title);
                     }
                 }
             });
@@ -135,9 +135,21 @@
 
                 //候補をクリックすることでsubmitできるようにする
                 select: function(event, ui) {
-                    $("#autocomplete_search").val(ui.item.label);
+                    var name = ui.item.label;
+                    console.log(typeof(name))
+                    $("#autocomplete_search").val(name);
 
-                    var url = '/search/' + ui.item.label.replace('/', '|') + '/1';
+                    var num = 0;
+                    for (let i = 0; i < name.length; i++) {
+                        if (name[i] == ':') {
+                            num = i + 1;
+                            break;
+                        }
+                    }
+
+                    var url = '/search/' + name.split(':')[0] + '/1?contestname=' + name.slice(num, -1);
+
+                    console.log(name.slice(num, -1));
 
                     $('form').attr('action', url);
                     $("#search").submit();

@@ -66,15 +66,15 @@ def contest_search():
     problem_list=[]
     for problem in get_problem:
         if problem['contest_id']==contestname:
-            problem_list.append(problem['title'])
+            problem_list.append((problem['title'],problem['id']))
 
     return render_template('search.html',problems=problem_list)
 
 
-@app.route('/search/<contestname>/<int:page>', methods=['GET','POST'])
-def contest_get(contestname,page=1):
-    contestname = _normalize_contestname(contestname)
-    contestname.replace('/',"")
+@app.route('/search/<contest_id>/<int:page>', methods=['GET','POST'])
+def contest_get(contest_id,page=1):
+    contestname = _normalize_contestname(request.args.get('contestname'))
+    
     #ページネーション
     per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
