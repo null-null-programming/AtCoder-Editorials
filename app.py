@@ -76,7 +76,7 @@ def contest_get(contest_id,page=1):
     contestname = _normalize_contestname(request.args.get('contestname'))
 
     #ページネーション
-    per_page = 1
+    per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
 
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
