@@ -137,9 +137,9 @@
                 select: function(event, ui) {
                     $("#autocomplete_search").val(ui.item.label);
 
-                    var url = '/search/' + ui.item.label.replace('/', '%2F') + '/1'
+                    var url = '/search/' + ui.item.label.replace('/', '|') + '/1';
 
-                    $('form').attr('action', url)
+                    $('form').attr('action', url);
                     $("#search").submit();
                 }
             });
