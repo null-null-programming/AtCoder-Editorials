@@ -114,8 +114,8 @@ def submit():
     print(params['title'],params['url'],params['description'])
 
     #必要量記入されているかチェック
-    if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
-          and params['title'] is not None and params['title'] is not '':
+    if (params['description'] is not None and params['description'] is not '') or ((params['url'] is not None and params['url'] is not '')\
+          and (params['title'] is not None and params['title'] is not '')):
         newEditorial = Editorial(**params)
         db.session.add(newEditorial)
         db.session.commit()
