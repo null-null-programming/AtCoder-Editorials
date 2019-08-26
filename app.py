@@ -111,6 +111,8 @@ def submit():
     if params['description']!=None:
             params['description']=params['description'].replace('\r\n','<br>')
 
+    prin(params['title'],params['url'],params['description'])
+
     #必要量記入されているかチェック
     if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
           and params['title'] is not None and params['title'] is not '':
