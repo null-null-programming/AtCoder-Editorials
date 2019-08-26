@@ -94,7 +94,7 @@ def contest_get(contest_id,page=1):
         return render_template('contest.html',contestname=contestname,editorials=editorials)
 
 
-@app.route('/submited', methods=['POST'])
+@app.route('/submited', methods=['POST','GET'])
 def submit():
     #DBに挿入する解法情報
     params = {
