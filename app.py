@@ -50,12 +50,30 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def contest_search():
-    return render_template('search.html')
+    #JSON取得　
+    get_problem=requests.get('https://kenkoooo.com/atcoder/resources/problems.json')
+    get_contest=requests.get('https://kenkoooo.com/atcoder/resources/contests.json')
+    #list型に変換
+    get_problem=get_problem.json()
+    get_contest=get_contest.json()
+
+    #コンテストを新しい順に並び替える
+    contest_list=sorted(get_contest,key=lambda x: x['start_epoch_second'],reverse=True)
+    #最新のコンテスト名
+    contestname=contest_list[0]['id']
+
+    #新着問題を取得する
+    problem_list=[]
+    for problem in get_problem:
+        if problem['contest_id']==contestname:
+            problem_list.append(problem['title'])
+
+    return render_template('search.html',problems=problem_list)
 
 
 @app.route('/search/<contestname>/<int:page>', methods=['GET','POST'])
 def contest_get(contestname,page=1):
-    contestname = _normalize_contestname(request.form.get('contestname'))
+    contestname = _normalize_contestname(contestname)
 
     #ページネーション
     per_page = 10

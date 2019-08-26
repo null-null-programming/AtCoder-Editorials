@@ -67,14 +67,38 @@
                 </h5>
             </div>
         </div>
+        <h3>新着問題</h3>
 
-        <br>
+        <table class="table table-borderd">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">名前</th>
+                </tr>
+            </thead> {% for problem in problems%}
+            <tbody>
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>
+                        <a href="/search/{{problem}}/1" method="POST">{{problem}}</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
 
+        <div class="row container-fluid">
+            <h3>検索</h3>
+            <h3 class="col-1"></h3>
+            <h3 class="text-muted"> 入力後、下にスクロールして下さい</h3>
+        </div>
         <form id="search" method="POST" action="">
             <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
             <input id="autocomplete_search" placeholder="問題名" style="width:600px" name="contestname" type="text" />
         </form>
-
+        <br>
+        <br>
+        <br>
 
     </div>
 
