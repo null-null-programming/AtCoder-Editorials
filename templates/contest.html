@@ -71,7 +71,7 @@
         {% if current_user.is_authenticated== True %}
         <div>
             <div class="twitter">
-                <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{contestname}}の解法を書きました！" data-url='https://atcoder-editorials.herokuapp.com/search/{{contestname}}/1' data-lang="ja">
+                <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{contestname}}の解法を書きました！" data-url="https://atcoder-editorials.herokuapp.com/search/{{contestname}}/1" data-lang="ja">
                 </a>
             </div>
         </div>
@@ -88,14 +88,14 @@
                 投稿する
             </h4>
             <div class="collapse" id="sub1" data-parent="#submit-card" style="cursor: pointer;">
-                <form action="/submited " method='POST'>
+                <form action="/submited " method=' POST '>
                     <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
                     <input type="text" placeholder="タイトル" name="title" style="width:535px" />
                     <br>
                     <input type="text" placeholder="URL" name="url" style="width:535px" />
                     <br>
                     <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea> {%if contestname==None%}
-                    <button type="submit" class="btn btn-info" name="contestname" value="{{request.args.get('contestname','')}}">投稿</button> {%else%}
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{request.args.get('contestname ',' ')}}">投稿</button> {%else%}
                     <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}}">投稿</button>{%endif%}
 
                 </form>
@@ -130,7 +130,7 @@
                 {%endif%}{%else%}
                 <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
                 <h5 class="col-1"></h5>
-                <img src={{edit.user_image_url}} alt='No Image' style="width:36px;height:36px;vertical-align:middle;">
+                <img src={{edit.user_image_url}} alt='No Image ' style="width:36px;height:36px;vertical-align:middle;">
                 <a href="/user/{{edit.user_id}}/1" class="h4 text-dark" style="vertical-align:middle;">{{edit.username}}</a>
                 <h5 class="col-1"></h5>
                 {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
@@ -162,7 +162,7 @@
             <br> {% endfor %}
         </div>
         {%else%}
-        <h4 class='container-fluid'>まだ投稿がありません</h4>
+        <h4 class='container-fluid '>まだ投稿がありません</h4>
         <br> {%endif%}
     </div>
 
@@ -170,14 +170,14 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',''))}}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.prev_num,contestname=request.args.get('contestname ',' '))}}">
         {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname)}}">
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.prev_num,contestname=contestname)}}">
         {%endif%}
         << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname','')) }}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.next_num,contestname=request.args.get('contestname ',' ')) }}">
                 {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname)}}">
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get ', page=editorials.next_num,contestname=contestname)}}">
         {%endif%}
          次のページ >></a></li>{% endif %}
         </ul>
@@ -189,41 +189,41 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <script type="text/javascript">
-        $('.like_button').on('click', function() {
-            $(this).toggleClass('active');
+        $('.like_button ').on('click ', function() {
+            $(this).toggleClass('active ');
 
-            if ($(this).hasClass('active')) {
-                var text = $(this).data('btn btn-info');
+            if ($(this).hasClass('active ')) {
+                var text = $(this).data('btn btn-info ');
             } else {
-                var text = $(this).data('btn btn-outline-info');
+                var text = $(this).data('btn btn-outline-info ');
             }
 
             $(this).html(text);
 
             event.preventDefault();
             $.ajax({
-                    url: '/like',
-                    type: 'post',
-                    dataType: 'text',
+                    url: '/like ',
+                    type: 'post ',
+                    dataType: 'text ',
                     data: {
                         id: $(this).val(),
                     },
                 }).done(function(response) {
-                    console.log('success');
+                    console.log('success ');
                 })
                 .fail(function() {
-                    console.log('fail');
+                    console.log('fail ');
                 });
         })
 
-        $('.delete_button').on('click', function() {
+        $('.delete_button ').on('click ', function() {
             flag = window.confirm("本当に削除してもよろしいでしょうか？")
             event.preventDefault();
             if (flag === true) {
                 $.ajax({
-                    url: '/delete',
-                    type: 'post',
-                    dataType: 'text',
+                    url: '/delete ',
+                    type: 'post ',
+                    dataType: 'text ',
                     data: {
                         id: $(this).val(),
                     }
@@ -238,7 +238,7 @@
             });
         });
 
-        var csrftoken = $('meta[name=csrf-token]').attr('content')
+        var csrftoken = $('meta[name=csrf-token] ').attr('content ')
 
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
