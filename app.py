@@ -107,8 +107,9 @@ def submit():
         'username': current_user.username,
         'user_id':current_user.id
     }   
-
-    params['description']=params['description'].replace('\r\n','<br>')
+    
+    if params['description']!=None:
+            params['description']=params['description'].replace('\r\n','<br>')
 
     #必要量記入されているかチェック
     if ((params['description'] is not None and params['description'] is not '') or (params['url'] is not None and params['url'] is not ''))\
