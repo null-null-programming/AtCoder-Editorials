@@ -74,7 +74,7 @@ def contest_search():
 @app.route('/search/<contestname>/<int:page>', methods=['GET','POST'])
 def contest_get(contestname,page=1):
     contestname = _normalize_contestname(contestname)
-
+    contestname.replace('/',"")
     #ページネーション
     per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
