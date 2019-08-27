@@ -141,7 +141,7 @@
                 <h5 class="col-1"></h5>
                 {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
                 <form>
-                    <input type="hidden" name="csrf_oken" value="{{csrf_token}}" />
+                    <input type="hidden" name="csrf_oken" value="{{csrf_token()}}" />
                     <button class="delete_button btn" style="color:tomato;" name="delete_id" value={{edit.id}}>削除</button>
                 </form>
                 {%endif%}
