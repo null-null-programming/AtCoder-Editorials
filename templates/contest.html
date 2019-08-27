@@ -170,14 +170,14 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.prev_num,contestname=request.args.get('contestname ',' '))}}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id)}}">
         {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.prev_num,contestname=contestname)}}">
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id)}}">
         {%endif%}
         << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get ', page=editorials.next_num,contestname=request.args.get('contestname ',' ')) }}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id) }}">
                 {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get ', page=editorials.next_num,contestname=contestname)}}">
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id)}}">
         {%endif%}
          次のページ >></a></li>{% endif %}
         </ul>

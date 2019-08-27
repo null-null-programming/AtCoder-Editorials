@@ -76,7 +76,7 @@ def contest_get(contest_id,page=1):
     contestname = _normalize_contestname(request.args.get('contestname'))
 
     #ページネーション
-    per_page = 10
+    per_page = 1
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
 
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
@@ -89,9 +89,9 @@ def contest_get(contest_id,page=1):
             else:
                 flag[edit.id]=False
 
-        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag)
+        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,contest_id=contest_id)
     else:
-        return render_template('contest.html',contestname=contestname,editorials=editorials)
+        return render_template('contest.html',contestname=contestname,editorials=editorials,contest_id=contest_id)
 
 
 @app.route('/submited', methods=['POST','GET'])
@@ -111,7 +111,6 @@ def submit():
     if params['description']!=None:
             params['description']=params['description'].replace('\r\n','<br>')
 
-    print(params['title'],params['url'],params['description'])
 
     #必要量記入されているかチェック
     if (params['description'] is not None and params['description'] is not '') or ((params['url'] is not None and params['url'] is not '')\
