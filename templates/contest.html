@@ -121,6 +121,7 @@
         <div id="editorial-card">
 
             {% for edit in editorials.items %}
+            <br>
             <div class="row container-fluid">
                 {%if current_user.is_authenticated==True%} {% if flag[edit.id]==False%}
                 <form>
