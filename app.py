@@ -244,7 +244,7 @@ def oauth_callback():
     return redirect(url_for('index'))
 
 #いいね処理
-@app.route('/like',methods=['GET'])
+@app.route('/like',methods=['POST'])
 def like():
     id=request.args.get('id')
 
