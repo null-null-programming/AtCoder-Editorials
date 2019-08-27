@@ -71,9 +71,18 @@ def contest_search():
     return render_template('search.html',problems=problem_list)
 
 
-@app.route('/search/<contest_id>/<int:page>', methods=['GET','POST'])
-def contest_get(contest_id,page=1):
+@app.route('/search/<problem_id>/<int:page>', methods=['GET','POST'])
+def contest_get(problem_id,page=1):
     contestname = _normalize_contestname(request.args.get('contestname'))
+    
+    get_problem=requests.get('https://kenkoooo.com/atcoder/resources/problems.json')
+    get_problem=get_problem.json()
+
+    contest_id=''
+    for problem in get_problem:
+        if problem_id==problem['id']:
+            contest_id=problem['contest_id']
+            break
 
     #ページネーション
     per_page = 10
@@ -89,9 +98,9 @@ def contest_get(contest_id,page=1):
             else:
                 flag[edit.id]=False
 
-        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,contest_id=contest_id)
+        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,problem_id=problem_id,contest_id=contest_id)
     else:
-        return render_template('contest.html',contestname=contestname,editorials=editorials,contest_id=contest_id)
+        return render_template('contest.html',contestname=contestname,editorials=editorials,problem_id=problem_id,contest_id=contest_id)
 
 
 @app.route('/submited', methods=['POST','GET'])

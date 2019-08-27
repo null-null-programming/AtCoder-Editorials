@@ -79,6 +79,11 @@
     </div>
     {%endif%}
 
+    <div class="container-fluid">
+        <a class="h4" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}">問題ページ</a>
+        <a class="h4" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf">公式editorial</a>
+    </div>
+
 
     <br> {% if current_user.is_authenticated== True %}
     <div id="submit-card">
@@ -170,14 +175,14 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id)}}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id)}}">
         {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id)}}">
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
         {%endif%}
         << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id) }}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id) }}">
                 {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id)}}">
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
         {%endif%}
          次のページ >></a></li>{% endif %}
         </ul>
