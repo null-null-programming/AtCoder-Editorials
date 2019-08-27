@@ -256,6 +256,7 @@ def oauth_callback():
 @app.route('/like',methods=['POST'])
 def like():
     id=request.args.get('id')
+    print(id)
 
     #いいねを既にされているかどうか
     flag=db.session.query(Like).filter(Like.edit_id==id).filter(Like.user_id==current_user.id).first()
