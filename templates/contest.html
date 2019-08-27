@@ -125,12 +125,12 @@
             <div class="row container-fluid">
                 {%if current_user.is_authenticated==True%} {% if flag[edit.id]==False%}
                 <form>
-                    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
                     <button class="like_button btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
                 </form>
                 {%else%}
                 <form>
-                    <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
                     <button class="like_button btn btn-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button>
                 </form>
                 {%endif%}{%else%}
