@@ -91,6 +91,14 @@
                 <br>
                 <br>
                 <div class="container-fluid">
+                    {% if current_user.is_authenticated==True and e.user_id==current_user.id%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
+                        <button class="delete_button btn" style="color:tomato;" name="delete_id" value={{e.id}}>削除</button>
+                    </form>
+                    {%endif%}
+                </div>
+                <div class="container-fluid">
                     <h4>{{e.contestname}}</h4>
                 </div>
 
