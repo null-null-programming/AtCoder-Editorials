@@ -11,14 +11,12 @@ $('.like_button').on('click', function() {
 
     event.preventDefault();
 
+    url = '/like?id=' + $(this).val();
     console.log(url);
     $.ajax({
-        url: '/like',
+        url: url,
         type: 'POST',
         dataType: 'text',
-        data: {
-            id: $(this).val()
-        }
     }).done(function() {
         console.log('success');
     }).fail(function() {
