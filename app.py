@@ -264,8 +264,6 @@ def like():
     #ユーザー情報
     user=db.session.query(User).filter(User.id==edit.user_id).first()
 
-    print(flag,edit,user)
-
     #既にいいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
     if flag!=None:
