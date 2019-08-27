@@ -145,7 +145,11 @@
                         }
                     }
 
-                    var url = '/search/' + name.split(':')[0] + '/1?contestname=' + name.slice(num);
+                    var back = name.slice(num).replace('&', '%26');
+                    back = back.replace('?', '%3F');
+                    back = back.replace('=', '%3D');
+
+                    var url = '/search/' + name.split(':')[0] + '/1?contestname=' + back;
 
                     console.log(name.slice(num, -1));
 
