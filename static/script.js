@@ -15,7 +15,7 @@ $('.like_button').on('click', function() {
     console.log(url);
     $.ajax({
         url: url,
-        type: 'GET',
+        type: 'POST',
         dataType: 'text',
     }).done(function() {
         console.log('success');
