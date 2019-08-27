@@ -17,7 +17,9 @@ $('.like_button').on('click', function() {
         url: url,
         type: 'POST',
         dataType: 'text',
-        data: data,
+        data: {
+            id: $(this).val()
+        },
     }).done(function() {
         console.log('success');
     }).fail(function() {
