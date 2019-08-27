@@ -123,6 +123,7 @@
             {% for edit in editorials.items %}
             <br>
             <div class="row container-fluid">
+                <!--
                 {%if current_user.is_authenticated==True%} {% if flag[edit.id]==False%}
                 <form>
                     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
@@ -135,6 +136,7 @@
                 </form>
                 {%endif%}{%else%}
                 <button class="like_button_no_login btn btn-outline-info" name="id" value={{edit.id}}>{{edit.like}}いいね</button> {%endif%}
+            -->
                 <h5 class="col-1"></h5>
                 <img src={{edit.user_image_url}} alt='No Image ' style="width:36px;height:36px;vertical-align:middle;">
                 <a href="/user/{{edit.user_id}}/1" class="h4 text-dark" style="vertical-align:middle;">{{edit.username}}</a>
