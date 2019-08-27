@@ -1,3 +1,38 @@
+$('.like_button').on('click', function() {
+    $(this).toggleClass('active');
+
+    if ($(this).hasClass('active')) {
+        var text = $(this).data('btn btn-info');
+    } else {
+        var text = $(this).data('btn btn-outline-info');
+    }
+
+    $(this).html(text);
+
+    event.preventDefault();
+
+    url = '/like?id=' + $(this).val();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'text',
+    })
+})
+
+$('.delete_button ').on('click ', function() {
+    flag = window.confirm("本当に削除してもよろしいでしょうか？")
+    event.preventDefault();
+    if (flag === true) {
+        url = '/delete?id=' + $(this).val();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+
+        })
+    }
+})
+
 //input内でのEnter無効化
 $(function() {
     $(document).on("keypress", "input:not(.allow_submit)", function(event) {
