@@ -189,30 +189,30 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <script type="text/javascript">
-        $('.like_button ').on('click ', function() {
-            $(this).toggleClass('active ');
+        $('.like_button').on('click', function() {
+            $(this).toggleClass('active');
 
-            if ($(this).hasClass('active ')) {
-                var text = $(this).data('btn btn-info ');
+            if ($(this).hasClass('active')) {
+                var text = $(this).data('btn btn-info');
             } else {
-                var text = $(this).data('btn btn-outline-info ');
+                var text = $(this).data('btn btn-outline-info');
             }
 
             $(this).html(text);
 
             event.preventDefault();
             $.ajax({
-                    url: '/like ',
-                    type: 'post ',
-                    dataType: 'text ',
+                    url: '/like',
+                    type: 'post',
+                    dataType: 'text',
                     data: {
                         id: $(this).val(),
                     },
                 }).done(function(response) {
-                    console.log('success ');
+                    console.log('success');
                 })
                 .fail(function() {
-                    console.log('fail ');
+                    console.log('fail');
                 });
         })
 
@@ -221,9 +221,9 @@
             event.preventDefault();
             if (flag === true) {
                 $.ajax({
-                    url: '/delete ',
-                    type: 'post ',
-                    dataType: 'text ',
+                    url: '/delete',
+                    type: 'post',
+                    dataType: 'text',
                     data: {
                         id: $(this).val(),
                     }
