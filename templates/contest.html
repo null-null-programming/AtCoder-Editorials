@@ -201,19 +201,13 @@
             $(this).html(text);
 
             event.preventDefault();
+
+            url = '/like?id=' + $(this).val();
             $.ajax({
-                    url: '/like',
-                    type: 'post',
-                    dataType: 'text',
-                    data: {
-                        id: $(this).val(),
-                    },
-                }).done(function(response) {
-                    console.log('success');
-                })
-                .fail(function() {
-                    console.log('fail');
-                });
+                url: url,
+                type: 'GET',
+                dataType: 'text',
+            })
         })
 
         $('.delete_button ').on('click ', function() {
@@ -226,10 +220,6 @@
                     type: 'GET',
                     dataType: 'text',
 
-                }).done(function() {
-                    console.log('success');
-                }).fail(function() {
-                    console.log('fail');
                 })
             }
         })
