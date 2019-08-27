@@ -253,7 +253,7 @@ def oauth_callback():
     return redirect(url_for('index'))
 
 #いいね処理
-@app.route('/like',methods=['POST','GET'])
+@app.route('/like',methods=['POST'])
 def like():
     id=request.args.get('id')
 
@@ -263,6 +263,8 @@ def like():
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
     #ユーザー情報
     user=db.session.query(User).filter(User.id==edit.user_id).first()
+
+    print(flag,edit,user)
 
     #既にいいねされていた場合
     newLike=Like(user_id=current_user.id,edit_id=id)
