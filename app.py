@@ -275,9 +275,9 @@ def like():
     return 'hoge'
 
 #解法消去処理
-@app.route('/delete',methods=['POST'])
+@app.route('/delete',methods=['GET'])
 def delete():
-    edit=db.session.query(Editorial).filter(Editorial.id==request.form['id']).first()
+    edit=db.session.query(Editorial).filter(Editorial.id==request.args.get('id')).first()
 
     #投稿者の総いいね数から、消去する解法のいいね数を減らす
     user=db.session.query(User).filter(User.id==edit.user_id).first()

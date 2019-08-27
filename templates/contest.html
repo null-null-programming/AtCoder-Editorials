@@ -221,12 +221,10 @@
             event.preventDefault();
             if (flag === true) {
                 $.ajax({
-                    url: '/delete',
-                    type: 'post',
+                    url: '/delete?id=$(this).val()',
+                    type: 'GET',
                     dataType: 'text',
-                    data: {
-                        id: $(this).val(),
-                    }
+
                 }).done(function() {
                     console.log('success');
                 }).fail(function() {
@@ -242,7 +240,7 @@
             });
         });
 
-        var csrftoken = $('meta[name=csrf-token] ').attr('content ')
+        var csrftoken = $('meta[name=csrf-token]').attr('content')
 
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
