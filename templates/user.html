@@ -103,7 +103,6 @@
                     </form>
                     {%endif%}{%else%}
                     <button class="like_button_no_login btn btn-outline-info" name="id" value={{e.id}}>{{e.like}}いいね</button> {%endif%}
-                    <h4 class="col-1"></h4>
                     <h4>{{e.contestname}}</h4>
                     <h4 class="col-1"></h4>
                     {% if current_user.is_authenticated==True and e.user_id==current_user.id%}
