@@ -258,7 +258,7 @@ def like():
     id=request.args.get('id')
 
     #いいねを既にされているかどうか
-    flag=db.session.query(Like).filter(Like.edit_id==id ).filter(Like.user_id==current_user.id).first()
+    flag=db.session.query(Like).filter(Like.edit_id==id).filter(Like.user_id==current_user.id).first()
     #解法情報
     edit=db.session.query(Editorial).filter(Editorial.id==id).first()
     #ユーザー情報
