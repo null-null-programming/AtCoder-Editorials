@@ -139,11 +139,11 @@
                 <img src={{edit.user_image_url}} alt='No Image ' style="width:36px;height:36px;vertical-align:middle;">
                 <a href="/user/{{edit.user_id}}/1" class="h4 text-dark" style="vertical-align:middle;">{{edit.username}}</a>
                 <h5 class="col-1"></h5>
+                {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
                 <form action="/edit" method="POST">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <button class="btn" name="edit_id" value={{edit.id}} type="submit">編集</button>
                 </form>
-                {% if current_user.is_authenticated==True and edit.user_id==current_user.id%}
                 <form>
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <button class="delete_button btn" style="color:tomato;" name="delete_id" value={{edit.id}}>削除</button>
