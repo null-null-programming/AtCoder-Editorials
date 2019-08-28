@@ -112,7 +112,6 @@
         <h4>「投稿」または「いいね」をするにはログインが必要です</h4>
     </div>
     {%endif%}
-    <br>
 
 
     <div>
@@ -195,11 +194,91 @@
         </ul>
     </div>
 
+    <br>
+    <br>
+
+    <div class="container-fluid">
+        <h3>タグ投票</h3>
+        <form id="search" method="POST" action="">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input id="tag_search" placeholder="タグ名" style="width:600px" name="tagName" type="text" />
+        </form>
+    </div>
+
+    <br>
+    <br>
+
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI=" crossorigin="anonymous"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script src="/static/script.js"></script>
+
+    <script type="text/javascript">
+        (async function() {
+            const tags = ["実装", "探索", "数学", "算数", "貪欲法", "文字列", "数え上げ",
+                "門松列", "二分探索", "場合分け", "幾何", "セグメント木", "累積和", "組合せ",
+                "幅優先探索", "発想", "グラフ", "ソート", "期待値", "リアクティブ", "素因数分解",
+                "BIT", "bitDP", "ゲーム", "文字列処理", "構築", "確率", "桁DP", "シミュレーション",
+                "剰余", "回文", "木", "union-find", "メモ化再帰", "平方分割", "座標圧縮",
+                "しゃくとり法", "探索", "深さ優先探索", "漸化式", "約数", "ダイクストラ法",
+                "フェルマーの小定理", "包除原理", "埋め込み", "最大公約数", "素数判定", "行列べき乗",
+                "誤差", "Grundy数", "cww", "ビット演算", "分数", "半分全列挙", "平衡二分探索木",
+                "構文解析", "繰り返し二乗法", "置換", "貪欲", "逆元", "FFT", "Nim", "アドホック",
+                "マンハッタン距離", "三分探索", "中華風剰余定理", "周期性", "多倍長整数",
+                "最小公倍数", "木DP", "正規表現", "考察", "行列", "計算", "遅延セグメント木",
+                "Heavy-Light_Decomposition", "Miller-Rabin素数判定法", "RMQ", "SPFA",
+                "チェビシェフ距離", "バケット法", "フィボナッチ", "優先度付きキュー", "分割統治法",
+                "基数変換", "場合の数", "巡回群", "整数論", "素数", "素数列挙", "経路復元",
+                "行列累乗", "転倒数", "連立方程式", "順列", "魔方陣", "-SAT", "Garner", "LCA",
+                "Mod", "Polyaの定理", "dfs", "imos法", "union-find木", "きたまさ法",
+                "カタラン数", "スライド最小値", "チャンパーノウン定数", "テトラナッチ", "データ構造",
+                "ハッシュテーブル", "バケットソート", "バックトラック", "パスカルの三角形",
+                "ビット並列", "メモリ制限", "メモ化", "モンテカルロ法", "ルジャンドルの定理",
+                "ロシアゲー", "ローリングハッシュ", "ワーシャルフロイド", "乱択アルゴリズム",
+                "二次関数", "余り", "偶奇性", "入出力", "全列挙", "凸包", "図形", "多項式", "巡回路",
+                "挿入DP", "排他的論理和", "数値計算", "数字根", "整数計算", "最大流", "最小カット",
+                "最小全域木", "最短経路", "期待値の線形性", "木構造", "条件分岐", "枝刈り", "格子点",
+                "独立性", "畳み込み", "精度落ち", "総当り", "配列", "閉路検出", "inline-DP"
+            ];
+
+            $('#tag_search').autocomplete({
+                source: tags,
+                autoFocus: true,
+                delay: 100,
+                minLength: 2,
+                appendTo: "menu",
+
+                //候補をクリックすることでsubmitできるようにする
+                select: function(event, ui) {
+                    var name = ui.item.label;
+                    $("#tag_search").val(name);
+                    $('form').attr('action', '/tag_search?tagName=' + name + '&problem_id={{problem_id}}');
+                    $("#search").submit();
+                }
+            });
+
+            //input内でのEnter無効化
+            $(function() {
+                $(document).on("keypress", "input:not(.allow_submit)", function(event) {
+                    return event.which !== 13;
+                });
+            });
+
+            //日本語入力をスタートしたら無効化
+            $('#tag_search').on('compositionstart', function() {
+                $('#tag_search').autocomplete('disable');
+            });
+
+            //日本語入力が確定したら有効化
+            $('#tag_search').on('compositionend', function() {
+                $('#tag_search').autocomplete('enable').autocomplete('search');
+            });
+
+        })();
+    </script>
+
 </body>
 
 </html>

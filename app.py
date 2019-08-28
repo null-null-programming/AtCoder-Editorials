@@ -37,6 +37,12 @@ class Like(db.Model):
     user_id=db.Column(db.Integer)
     edit_id=db.Column(db.Integer)
 
+class Tag(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    problem_id=db.Column(db.Integer)
+    tag=db.Column(db.String(64))
+    user_id=db.Column(db.Integer)
+
 #コンテスト名に含まれる空白などを取り除く
 def _normalize_contestname(contestname):
     if isinstance(contestname, str):
