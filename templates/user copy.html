@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WW39BS6');
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>AtCoder Editorials</title>
+</head>
+
+<body style="padding-top:5rem">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WW39BS6" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <nav class="navbar navbar-expand-md  navbar-dark bg-dark fixed-top">
+        <a href="/" class="navbar-brand">AtCoder Editorials</a>
+
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#nav1">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav1">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="/" class="nav-link">ホーム</a></li>
+                <li class="nav-item"><a href="/search" class="nav-link">問題</a></li>
+                <li class="nav-item"><a href="/ranking/1" class="nav-link">ランキング</a></li>
+                {% if current_user.is_authenticated==True %}
+                <li class="nav-item"><a href="/user/{{current_user.id}}/1" class="nav-link">ユーザーページ</a></li>
+                {%endif%}
+            </ul>
+            {% if current_user.is_authenticated==False %}
+            <span class="navbar-text"><a href="/oauth/twitter" class="btn btn-info">ログイン</a></span> {%else%}
+            <span class="navbar-text"><a href="/logout" class="btn btn-danger">ログアウト</a></span> {%endif%}
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="jumbotron jumbotron-fluid text-dark">
+            <h1>{{user.username}}</h1>
+            <div>
+                <h4>登録日時：{{date_published}}</h4>
+            </div>
+            <div>
+                <h4>順位　　：{{rank}}位</h4>
+            </div>
+            <div>
+                <h4> いいね数 :{{user.like_sum}}</h4>
+            </div>
+            <div>
+                <h4> 投稿数　 :{{num}}</h4>
+            </div>
+            <div>
+                {%if current_user.is_authenticated==True%}
+                <div class="twitter">
+                    <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{rank}}位になりました！" data-url="https://atcoder-editorials.herokuapp.com/user/{{user.id}}/1" data-lang="ja">
+                    </a>
+                </div>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <h3>投稿一覧</h3>
+        <div>
+            {%for e in edit.items %}
+            <div id="editorial-card">
+                <br>
+                <br>
+
+                <div class="row container-fluid">
+                    {%if current_user.is_authenticated==True%} {% if flag[e.id]==False%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                        <button class="like_button btn btn-outline-info" name="id" value={{e.id}}>{{e.like}}いいね</button>
+                    </form>
+                    {%else%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                        <button class="like_button btn btn-info" name="id" value={{e.id}}>{{e.like}}いいね</button>
+                    </form>
+                    {%endif%}{%else%}
+                    <button class="like_button_no_login btn btn-outline-info" name="id" value={{e.id}}>{{e.like}}いいね</button> {%endif%}
+
+                    <h4>{{e.contestname}}</h4>
+                    <h4 class="col-1"></h4>
+                    {% if current_user.is_authenticated==True and e.user_id==current_user.id%}
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                        <button class="delete_button btn" style="color:tomato;" name="delete_id" value={{e.id}}>削除</button>
+                    </form>
+                    {%endif%}
+                </div>
+
+                <div class="container-fluid">
+                    <div class="card col-6 border-0" style="cursor: pointer;">
+                        <h4 class="card-header text-dark bg-light col-10" data-toggle="collapse" data-target="#e{{loop.index}}">
+                            {{e.title}}
+                        </h4>
+
+                        <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                            {% if e.url!=None%}
+                            <a href={{e.url}}>{{e.url}}</a> {%endif%}
+                        </div>
+
+                        <div class="collapse" id="e{{loop.index}}" data-parent="#editorial-card">
+                            {% autoescape false %} {%if e.description!=None%}
+                            <br>
+                            <p>{{e.description}}</p>
+                            {%endif%} {% endautoescape %}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="container-fluid">
+            <ul class="pagination">
+                {% if edit.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('user', page=edit.prev_num,id=user.id)}}">前のページ</a>
+                </li>
+                {% endif %} {% if edit.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('user', page=edit.next_num,id=user.id)}}">次のページ</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script src="/static/script.js"></script>
+</body>
+
+
+</html>

@@ -118,7 +118,7 @@ def submit():
     }   
     
     if params['description']!=None:
-            params['description']=params['description'].replace('\r\n','<br>')
+            params['description']=params['description'].replace('\r\n','&#13;')
 
 
     #必要量記入されているかチェック
@@ -134,6 +134,28 @@ def submit():
         else:
             return render_template('error.html', message='Error:URLまたは解説文を入力して下さい。')
 
+#編集
+@app.route('/edit',methods=['POST'])
+def edit():
+    id=request.form['edit_id']
+    edit=Editorial.query.filter_by(id=id).first()
+    return render_template('edit.html',edit=edit)
+
+@app.route('/edit_fin',methods=['POST'])
+def edit_fin():
+    id=request.form['id']
+    edit=Editorial.query.filter_by(id=id).first()
+
+    edit.title=request.form['title']
+    edit.url=request.form['url']
+
+    description=request.form['description']
+    if description!=None:
+            description=description.replace('\r\n','&#13;')
+    
+    edit.description=description
+
+    return render_template('edit_fin.html')
 
 @app.route('/user/<int:id>/<int:page>',methods=['GET'])
 def user(id,page=1):
