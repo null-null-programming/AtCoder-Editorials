@@ -155,6 +155,8 @@ def edit_fin():
     
     edit.description=description
 
+    db.session.commit()
+
     return render_template('edit_fin.html')
 
 @app.route('/user/<int:id>/<int:page>',methods=['GET'])
