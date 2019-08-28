@@ -118,7 +118,7 @@ def submit():
     }   
     
     if params['description']!=None:
-            params['description']=params['description'].replace('\r\n','&#13;')
+            params['description']=params['description'].replace('\r\n','<br>')
 
 
     #必要量記入されているかチェック
@@ -139,6 +139,10 @@ def submit():
 def edit():
     id=request.form['edit_id']
     edit=Editorial.query.filter_by(id=id).first()
+
+    if edit.description!=None:
+        edit.description.replace('<br>','&#13')
+        
     return render_template('edit.html',edit=edit)
 
 @app.route('/edit_fin',methods=['POST'])
@@ -151,11 +155,11 @@ def edit_fin():
 
     description=request.form['description']
     if description!=None:
-            description=description.replace('\r\n','&#13;')
+            description=description.replace('\r\n','<br>')
     
     edit.description=description
 
-    db.session.commit()
+    db.session.commit
 
     return render_template('edit_fin.html')
 
