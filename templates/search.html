@@ -145,13 +145,7 @@
                         }
                     }
 
-                    var back = name.slice(num).replace('&', '%26');
-                    back = back.replace('?', '%3F');
-                    back = back.replace('=', '%3D');
-
-                    var url = '/search/' + name.split(':')[0] + '/1?contestname=' + back;
-
-                    console.log(name.slice(num, -1));
+                    var url = '/search/' + name.split(':')[0] + '/1?contestname=' + encodeURIComponent(name.slice(num));
 
                     $('form').attr('action', url);
                     $("#search").submit();
