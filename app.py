@@ -142,7 +142,7 @@ def edit():
 
     if edit.description!=None:
         edit.description.replace('<br>','&#13')
-        
+        db.session.commit()
     return render_template('edit.html',edit=edit)
 
 @app.route('/edit_fin',methods=['POST'])
