@@ -156,7 +156,7 @@ def edit_fin():
     
     edit.description=description
 
-    db.session.commit
+    db.session.commit()
 
     return render_template('edit_fin.html')
 
