@@ -139,11 +139,8 @@ def submit():
 def edit():
     id=request.form['edit_id']
     edit=Editorial.query.filter_by(id=id).first()
-
-    if edit.description!=None:
-        edit.description.replace('<br>','&#13')
-        db.session.commit()
-    return render_template('edit.html',edit=edit)
+    description=edit.description.replace('<br>','&#13')
+    return render_template('edit.html',edit=edit,description=description)
 
 @app.route('/edit_fin',methods=['POST'])
 def edit_fin():
