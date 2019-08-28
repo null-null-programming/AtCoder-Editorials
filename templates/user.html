@@ -111,7 +111,7 @@
                     {% if current_user.is_authenticated==True and e.user_id==current_user.id%}
                     <form action="/edit" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                        <button class="btn" name="edit_id" value={{edit.id}} type="submit">編集</button>
+                        <button class="btn" name="edit_id" value={{e.id}} type="submit">編集</button>
                     </form>
                     <form>
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
