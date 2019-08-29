@@ -7,6 +7,7 @@ from datetime import datetime
 from rauth import OAuth1Service
 import requests
 import json
+from collections import defaultdict
 from config import app, db, service, login_manager,csrf
 
 #ユーザー情報
@@ -93,14 +94,26 @@ def contest_get(problem_id,page=1):
     tag_flag=False
 
     if current_user.is_authenticated==True:
-         voted=db.session.query(Tag).filter(user_id==current_user.id,problem_id==problem_id).first()
+         voted=db.session.query(Tag).filter(Tag.user_id==current_user.id,Tag.problem_id==problem_id).first()
          if voted==None:
              tag_flag=True
+    
+    tags=db.session.query(Tag).filter(Tag.problem_id==problem_id)
+    vote_num=defaultdict(int)
+    for t in tags:
+        vote_num[t.tag]+=1
+    
+    vote_num= sorted(vote_num.items(), key=lambda x:x[1],reverse=True)
+
+    tag=None
+    if len(vote_num)!=0:
+        tag=vote_num[0][0]
+    
 
     #ページネーション
     per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
-
+    
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
         flag={}
@@ -111,9 +124,9 @@ def contest_get(problem_id,page=1):
             else:
                 flag[edit.id]=False
 
-        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag)
+        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag,tag=tag)
     else:
-        return render_template('contest.html',contestname=contestname,editorials=editorials,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag)
+        return render_template('contest.html',contestname=contestname,editorials=editorials,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag,tag=tag)
 
 @app.route('/tag_vote',methods=['POST'])
 def tag_vote(): 
