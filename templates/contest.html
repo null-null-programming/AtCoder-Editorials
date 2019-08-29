@@ -180,24 +180,103 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id)}}">
-        {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
-        {%endif%}
-        << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id) }}">
-                {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
-        {%endif%}
-         次のページ >></a></li>{% endif %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
+                    {%else%}
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
+                    {%endif%}
+                    << 前のページ</a> </li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag) }}">
+                            {%else%}
+            <li class="page-item"><a class="page-link"
+                    href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
+                    {%endif%}
+                    次のページ >></a></li>{% endif %}
         </ul>
     </div>
+
+    {%if tag_flag==True%}
+    <br>
+    <br>
+
+    <div class="container-fluid">
+        <h3>タグ投票</h3>
+        <form id="search" method="POST" action="">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input id="tag_vote" placeholder="タグ名" style="width:600px" name="tagName" type="text" />
+        </form>
+    </div>
+
+    <br>
+    <br> {%endif%}
+
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI=" crossorigin="anonymous"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script src="/static/script.js"></script>
+
+    <script type="text/javascript">
+        (async function() {
+            const tag = ["フロー", "最小費用流", "最大マッチング", "最大流", "数学",
+                "包除原理", "連立方程式", "半環", "確率", "期待値", "FFT",
+                "アダマール変換", "メビウス変換", "ゼータ変換", "XOR", "中国剰余定理",
+                "線形計画法", "フィボナッチ数列", "有理数", "木構造",
+                "LCA", "HL分解", "オイラーツアー", "木の同型判定",
+                "重心分解", "LinkCutTree", "DynamicTree", "グラフ理論",
+                "スペクトルグラフ理論", "行列木定理", "ケイリーの公式", "橋",
+                "関節点", "サイクル基底", "lowlink", "ダイクストラ", "ベルマンフォード",
+                "ワーシャルフロイド", "オイラー路", "強連結成分分解", "最小パス被覆",
+                "Dilworthの定理", "トポロジカルソート", "最大クリーク", "最大独立集合",
+                "BFS", "後退解析", "最小全域木", "プリム", "クラスカル", "ブルーフカ",
+                "データ構造", "UnionFind", "セグメントツリー", "BIT", "遅延評価セグメントツリー",
+                "永続データ構造", "平衡二分木", "SparseTable", "WaveletMatrix", "動的計画法",
+                "区間DP", "桁DP", "CHT", "MongeDP", "AlianDP", "インラインDP", "きたまさ法",
+                "行列累乗", "戻すDP", "全方位木DP", "木DP", "bitDP", "挿入DP", "連結DP", "inlineDP",
+                "枝刈り", "マンハッタン距離", "しゃくとり法", "二分探索", "三分探索",
+                "imos法", "累積和", "最長部分増加列", "Mo'sAlgorithm",
+                "平方分割", "ローリングハッシュ", "SuffixArray", "LCP", "KMP",
+                "Aho-Corasick", "Z-algorithm", "PalindromicTree", "Manacher",
+                "SuffixTree", "Nim", "Grundy数", "後退解析", "ミニマックス法",
+                "2-SAT", "マージテク", "エラトステネスの篩", "区間篩", "分割統治法", "凸包",
+                "構築", "乱択アルゴリズム", "半分全列挙", "最近点対", "幾何", "構文解析", "平面走査"
+            ];
+            $('#tag_vote').autocomplete({
+                source: tag,
+                autoFocus: true,
+                delay: 100,
+                minLength: 2,
+                appendTo: "menu",
+
+                //候補をクリックすることでsubmitできるようにする
+                select: function(event, ui) {
+                    var name = ui.item.label;
+                    $("#tag_vote").val(name);
+                    $('form').attr('action', '/tag_vote?tagName=' + name + '&problem_id={{problem_id}}');
+                    $("#search").submit();
+                }
+            });
+
+            //input内でのEnter無効化
+            $(function() {
+                $(document).on("keypress", "input:not(.allow_submit)", function(event) {
+                    return event.which !== 13;
+                });
+            });
+
+            //日本語入力をスタートしたら無効化
+            $('#tag_vote').on('compositionstart', function() {
+                $('#tag_vote').autocomplete('disable');
+            });
+
+            //日本語入力が確定したら有効化
+            $('#tag_vote').on('compositionend', function() {
+                $('#tag_vote').autocomplete('enable').autocomplete('search');
+            });
+
+        })();
+    </script>
 
 </body>
 
