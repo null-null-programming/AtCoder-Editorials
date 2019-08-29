@@ -83,6 +83,10 @@
         <a class="h4" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
         <h4 class="col-1"></h4>
         <a class="h4" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
+        <h4 class="col-1"></h4>
+        {%if tag==None%}
+        <span class="badge badge-pill badge-secondary">投票がありません</span> {%else%}
+        <span class="badge badge-pill badge-secondary">{{tag}}</span> {%endif%}
     </div>
 
     <br> {% if current_user.is_authenticated== True %}
@@ -108,7 +112,7 @@
     </div>
     {% else %}
     <div class="container-fluid">
-        <h4>「投稿」または「いいね」をするにはログインが必要です</h4>
+        <h4>「投稿」「いいね」「タグ投票」をするにはログインが必要です</h4>
     </div>
     {%endif%}
 
