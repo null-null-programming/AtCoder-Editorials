@@ -99,9 +99,8 @@
                     <br>
                     <input type="text" placeholder="URL" name="url" style="width:535px" />
                     <br>
-                    <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea> {%if contestname==None%}
-                    <button type="submit" class="btn btn-info" name="contestname" value="{{request.args.get('contestname ',' ')}}">投稿</button> {%else%}
-                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}}">投稿</button>{%endif%}
+                    <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea>
+                    <button type="submit" class="btn btn-info" name="problem_id" value="{{problem_id}}">投稿</button>{%endif%}
 
                 </form>
             </div>

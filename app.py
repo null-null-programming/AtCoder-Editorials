@@ -109,7 +109,7 @@ def submit():
     params = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
-        'contestname': _normalize_contestname(request.form.get('contestname')),
+        'contestname': _normalize_contestname(request.form.get('problem_id')),
         'url': request.form.get('url'),
         'like':int(0),
         'user_image_url': current_user.user_image_url,
