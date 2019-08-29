@@ -81,8 +81,8 @@
         <h4 class="col-1"></h4>
 
         {%if tag==None%}
-        <span class="badge badge-pill badge-secondary">投票がありません</span> {%else%}
-        <span class="badge badge-pill badge-secondary">{{tag}}</span> {%endif%}
+        <span class="badge badge-pill badge-secondary w-auto">投票がありません</span> {%else%}
+        <span class="badge badge-pill badge-secondary w-auto">{{tag}}</span> {%endif%}
     </div>
 
     <br> {% if current_user.is_authenticated== True %}
@@ -180,28 +180,17 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <<<<<<< HEAD <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
-                    {%else%}
-            <li class="page-item"><a class="page-link"
-                    href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
-                    {%endif%}
-                    << 前のページ</a> </li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-                <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag) }}">
-                            {%else%}
-            <li class="page-item"><a class="page-link"
-                    href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
-                    {%endif%}
-                    次のページ >></a></li>{% endif %} =======
-                <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
+
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
         {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
+             <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
         {%endif%}
-        << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-                <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag) }}">
-                {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
+             << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag) }}">
+         {%else%}
+             <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag,tag=tag)}}">
         {%endif%}
-         次のページ >></a></li>{% endif %} >>>>>>> update
+         次のページ >></a></li>{% endif %}
         </ul>
     </div>
 
