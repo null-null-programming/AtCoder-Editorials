@@ -93,7 +93,7 @@ def contest_get(problem_id,page=1):
     tag_flag=False
 
     if current_user.is_authenticated==True:
-         voted=db.session.query(Tag).filter(user_id==current_user.id,problem_id==problem_id).first()
+         voted=db.session.query(Tag).filter(Tag.user_id==current_user.id,Tag.problem_id==problem_id).first()
          if voted==None:
              tag_flag=True
 
