@@ -86,7 +86,7 @@ def contest_get(problem_id,page=1):
 
     #ページネーション
     per_page = 10
-    editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
+    editorials = db.session.query(Editorial).filter_by(contestname=problem_id).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
 
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
