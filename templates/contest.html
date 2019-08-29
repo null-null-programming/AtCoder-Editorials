@@ -58,11 +58,6 @@
         </div>
     </nav>
 
-    {%if contestname == None%}
-    <div class="container-fluid">
-        <h1>{{request.args.get('contestname','')}}</h1>
-    </div>
-    {%else%}
     <div class="row container-fluid">
         <div>
             <h1>{{contestname}}</h1>
@@ -77,12 +72,16 @@
         </div>
         {%endif%}
     </div>
-    {%endif%}
+
 
     <div class="container-fluid">
         <a class="h4" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
         <h4 class="col-1"></h4>
         <a class="h4" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
+        <h4 class="col-1"></h4>
+        {%if tag == None%}
+        <span class="badge badge-pill badge-secondary py-2">まだ投票されていません</span> {%else%}
+        <span class="badge badge-pill badge-secondary py-2">{{tag}}</span> {%endif%}
     </div>
 
     <br> {% if current_user.is_authenticated== True %}
