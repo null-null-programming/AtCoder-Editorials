@@ -39,7 +39,7 @@ class Like(db.Model):
 
 class Tag(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    problem_id=db.Column(db.Integer)
+    problem_id=db.Column(db.String(64))
     tag=db.Column(db.String(64))
     user_id=db.Column(db.Integer)
 
@@ -90,6 +90,13 @@ def contest_get(problem_id,page=1):
             contest_id=problem['contest_id']
             break
 
+    tag_flag=False
+
+    if current_user.is_authenticated==True:
+         voted=db.session.query(Tag).filter(user_id==current_user.id,problem_id==problem_id).first()
+         if voted==None:
+             tag_flag=True
+
     #ページネーション
     per_page = 10
     editorials = db.session.query(Editorial).filter_by(contestname=contestname).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
@@ -104,10 +111,22 @@ def contest_get(problem_id,page=1):
             else:
                 flag[edit.id]=False
 
-        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,problem_id=problem_id,contest_id=contest_id)
+        return render_template('contest.html', contestname=contestname, editorials=editorials,flag=flag,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag)
     else:
-        return render_template('contest.html',contestname=contestname,editorials=editorials,problem_id=problem_id,contest_id=contest_id)
+        return render_template('contest.html',contestname=contestname,editorials=editorials,problem_id=problem_id,contest_id=contest_id,tag_flag=tag_flag)
 
+@app.route('/tag_vote',methods=['POST'])
+def tag_vote(): 
+    params={
+        'problem_id':request.args.get('problem_id'),
+        'tag':request.args.get('tagName'),
+        'user_id':current_user.id
+    }
+    newTag=Tag(**params)
+    db.session.add(newTag)
+    db.session.commit()
+
+    return render_template('vote_fin.html')
 
 @app.route('/submited', methods=['POST','GET'])
 def submit():

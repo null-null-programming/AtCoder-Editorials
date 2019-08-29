@@ -180,19 +180,20 @@
 
         <ul class="pagination">
             {% if editorials.has_prev %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id)}}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
         {%else%}
-        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
+        <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.prev_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
         {%endif%}
         << 前のページ</a></li> {% endif %}{% if editorials.has_next %} {%if contestname==None%}
-            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id) }}">
+            <li class="page-item"><a class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=request.args.get('contestname',' '),contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag) }}">
                 {%else%}
-                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id)}}">
+                <li class="page-item"><a  class="page-link" href="{{ url_for('contest_get', page=editorials.next_num,contestname=contestname,contest_id=contest_id,problem_id=problem_id,tag_flag=tag_flag)}}">
         {%endif%}
          次のページ >></a></li>{% endif %}
         </ul>
     </div>
 
+    {%if tag_flag==True%}
     <br>
     <br>
 
@@ -200,12 +201,12 @@
         <h3>タグ投票</h3>
         <form id="search" method="POST" action="">
             <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-            <input id="tag_search" placeholder="タグ名" style="width:600px" name="tagName" type="text" />
+            <input id="tag_vote" placeholder="タグ名" style="width:600px" name="tagName" type="text" />
         </form>
     </div>
 
     <br>
-    <br>
+    <br> {%endif%}
 
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
@@ -239,8 +240,8 @@
                 "2-SAT", "マージテク", "エラトステネスの篩", "区間篩", "分割統治法", "凸包",
                 "構築", "乱択アルゴリズム", "半分全列挙", "最近点対", "幾何", "構文解析", "平面走査"
             ];
-            $('#tag_search').autocomplete({
-                source: tags,
+            $('#tag_vote').autocomplete({
+                source: tag,
                 autoFocus: true,
                 delay: 100,
                 minLength: 2,
@@ -249,8 +250,8 @@
                 //候補をクリックすることでsubmitできるようにする
                 select: function(event, ui) {
                     var name = ui.item.label;
-                    $("#tag_search").val(name);
-                    $('form').attr('action', '/tag_search?tagName=' + name + '&problem_id={{problem_id}}');
+                    $("#tag_vote").val(name);
+                    $('form').attr('action', '/tag_vote?tagName=' + name + '&problem_id={{problem_id}}');
                     $("#search").submit();
                 }
             });
@@ -263,13 +264,13 @@
             });
 
             //日本語入力をスタートしたら無効化
-            $('#tag_search').on('compositionstart', function() {
-                $('#tag_search').autocomplete('disable');
+            $('#tag_vote').on('compositionstart', function() {
+                $('#tag_vote').autocomplete('disable');
             });
 
             //日本語入力が確定したら有効化
-            $('#tag_search').on('compositionend', function() {
-                $('#tag_search').autocomplete('enable').autocomplete('search');
+            $('#tag_vote').on('compositionend', function() {
+                $('#tag_vote').autocomplete('enable').autocomplete('search');
             });
 
         })();
