@@ -99,8 +99,9 @@
                     <br>
                     <input type="text" placeholder="URL" name="url" style="width:535px" />
                     <br>
-                    <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea>
-                    <button type="submit" class="btn btn-info" name="problem_id" value="{{problem_id}}">投稿</button>
+                    <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea> {%if contestname==None%}
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{request.args.get('contestname ',' ')}}">投稿</button> {%else%}
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}}">投稿</button>{%endif%}
 
                 </form>
             </div>
@@ -111,7 +112,6 @@
         <h4>「投稿」または「いいね」をするにはログインが必要です</h4>
     </div>
     {%endif%}
-    <br>
 
 
     <div>
@@ -193,12 +193,13 @@
          次のページ >></a></li>{% endif %}
         </ul>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI=" crossorigin="anonymous"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script src="/static/script.js"></script>
+
 </body>
 
 </html>

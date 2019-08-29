@@ -37,6 +37,12 @@ class Like(db.Model):
     user_id=db.Column(db.Integer)
     edit_id=db.Column(db.Integer)
 
+class Tag(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    problem_id=db.Column(db.Integer)
+    tag=db.Column(db.String(64))
+    user_id=db.Column(db.Integer)
+
 #コンテスト名に含まれる空白などを取り除く
 def _normalize_contestname(contestname):
     if isinstance(contestname, str):
@@ -109,7 +115,7 @@ def submit():
     params = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
-        'contestname': _normalize_contestname(request.form.get('problem_id')),
+        'contestname': _normalize_contestname(request.form.get('contestname')),
         'url': request.form.get('url'),
         'like':int(0),
         'user_image_url': current_user.user_image_url,
