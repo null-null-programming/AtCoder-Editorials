@@ -28,7 +28,7 @@
     <title>AtCoder Editorials</title>
 </head>
 
-<body style="padding-top:5rem">
+<body style="padding-top:5rem container-fluid">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WW39BS6" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
@@ -57,6 +57,27 @@
         </div>
     </nav>
     <h1>{{tagName}}</h1>
+    <div>
+        <table class="table table-borderd">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">名前</th>
+                </tr>
+            </thead> {% for problem in problems%}
+            <tbody>
+                <tr>
+                    <td scope="row">{{loop.index}}</td>
+                    <td>
+                        <a href="/search/{{problem.problem_official_name}}/1?contestname={{problem.problem_name}}" method="POST">{{problem_name}}</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+
+        </table>
+    </div>
+
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>

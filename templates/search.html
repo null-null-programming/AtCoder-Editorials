@@ -78,7 +78,7 @@
             </thead> {% for problem in problems%}
             <tbody>
                 <tr>
-                    <th scope="row">{{loop.index}}</th>
+                    <td scope="row">{{loop.index}}</td>
                     <td>
                         <a href="/search/{{problem[1]}}/1?contestname={{problem[0]}}" method="POST">{{problem[0]}}</a>
                     </td>
