@@ -151,6 +151,36 @@ def tag_vote():
     db.session.add(newTag)
     db.session.commit()
 
+    tag=db.session.query(Problem_Tag).filter_by(problme_id=params['problem_id']).first()
+
+    if tag==None:
+        tag_params={
+            'problem_id':params['problem_id'],
+            'problem_name':request.args.get('contestname'),
+            'first_tag':params['tag']
+        }
+        newProblemTag=Problem_Tag(**tag_params)
+        db.session.add(newProblemTag)
+        db.session.commit()
+
+    else:
+        tags=db.session.query(Tag).filter(Tag.problem_id==problem_id)
+        vote_num=defaultdict(int)
+
+        for t in tags:
+             vote_num[t.tag]+=1
+    
+         vote_num= sorted(vote_num.items(), key=lambda x:x[1],reverse=True)
+
+         tag=None
+         if len(vote_num)!=0:
+             tag=vote_num[0][0]
+         
+         if tag !=None:
+             tag.first_tag=tag
+             db.session.commit()
+         
+
     return render_template('vote_fin.html')
 
 @app.route('/submited', methods=['POST','GET'])

@@ -203,6 +203,7 @@
         <h3>タグ投票</h3>
         <form id="search" method="POST" action="">
             <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+
             <input id="tag_vote" placeholder="タグ名" style="width:600px" name="tagName" type="text" />
         </form>
     </div>
@@ -254,7 +255,7 @@
                 select: function(event, ui) {
                     var name = ui.item.label;
                     $("#tag_vote").val(name);
-                    $('form').attr('action', '/tag_vote?tagName=' + name + '&problem_id={{problem_id}}');
+                    $('form').attr('action', '/tag_vote?tagName=' + name + '&problem_id={{problem_id}}' + '&problem_name={{contestname}}');
                     $("#search").submit();
                 }
             });
