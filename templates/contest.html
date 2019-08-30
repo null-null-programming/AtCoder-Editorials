@@ -58,31 +58,33 @@
         </div>
     </nav>
 
-    <div class="row container-fluid">
-        <div>
-            <h1>{{contestname}}</h1>
-        </div>
-        <h4 class="col-1"></h4>
-        {% if current_user.is_authenticated== True %}
-        <div>
-            <div class="twitter">
-                <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{contestname}}の解法を書きました！" data-url="https://atcoder-editorials.herokuapp.com/search/{{problem_id}}/1" data-lang="ja">
-                </a>
+    <div class="jumbotron jumbotron-fluid container-fluid">
+        <div class="row container-fluid">
+            <div>
+                <h1>{{contestname}}</h1>
             </div>
+            <h4 class="col-1"></h4>
+            {% if current_user.is_authenticated== True %}
+            <div>
+                <div class="twitter">
+                    <a href="//twitter.com/share" class="twitter-share-button" data-text="AtCoderEditorialsで{{contestname}}の解法を書きました！" data-url="https://atcoder-editorials.herokuapp.com/search/{{problem_id}}/1" data-lang="ja">
+                    </a>
+                </div>
+            </div>
+            {%endif%}
         </div>
-        {%endif%}
-    </div>
 
 
-    <div class="container-fluid">
-        <a class="h5" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
-        <h4 class="col-1"></h4>
-        <a class="h5" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
-        <h4 class="col-1"></h4>
+        <div class="container-fluid">
+            <a class="h5" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
+            <h4 class="col-1"></h4>
+            <a class="h5" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
+            <h4 class="col-1"></h4>
 
-        {%if tag==None%}
-        <span class="badge badge-pill badge-secondary w-auto">投票がありません</span> {%else%}
-        <span class="badge badge-pill badge-secondary w-auto">{{tag}}</span> {%endif%}
+            {%if tag==None%}
+            <span class="badge badge-pill badge-secondary w-auto">投票がありません</span> {%else%}
+            <span class="badge badge-pill badge-secondary w-auto">{{tag}}</span> {%endif%}
+        </div>
     </div>
 
     <br> {% if current_user.is_authenticated== True %}
@@ -109,10 +111,9 @@
     </div>
     {% else %}
     <div class="container-fluid">
-        <h4>「投稿」「いいね」「タグ投票」をするにはログインが必要です</h4>
+        <h4>「投稿」「いいね」「タグ投票」をするにはログインが必要です。</h4>
     </div>
     {%endif%}
-
 
     <div>
         {% if editorials.items|length >0 %}
@@ -173,7 +174,7 @@
             <br> {% endfor %}
         </div>
         {%else%}
-        <h4 class='container-fluid '>まだ投稿がありません</h4>
+        <h4 class='container-fluid '>まだ投稿がありません。</h4>
         <br> {%endif%}
     </div>
 
