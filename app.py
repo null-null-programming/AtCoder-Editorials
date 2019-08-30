@@ -179,8 +179,7 @@ def tag_vote():
          
         if tag !=None:
              tag.first_tag=tag_
-        tag.problem_name=request.args.get('problem_name')
-        db.session.commit()
+             db.session.commit()
 
     return render_template('vote_fin.html')
 
