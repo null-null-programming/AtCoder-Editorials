@@ -88,7 +88,7 @@ def contest_search():
 @app.route('/tag_search',methods=['POST'])
 def tag_search():
     tagName=request.args.get('tagName')
-    problems=db.session.query(Problem_Tag).filter_by(first_tag=tagName)
+    problems=Problem_Tag.query.filter_by(first_tag=tagName)
     return render_template('tag_result.html',tagName=tagName,problems=problems)
 
 @app.route('/search/<problem_id>/<int:page>', methods=['GET','POST'])
