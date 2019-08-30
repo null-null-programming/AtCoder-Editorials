@@ -165,7 +165,7 @@ def tag_vote():
         db.session.commit()
 
     else:
-        tags=db.session.query(Tag).filter(Tag.problem_id==problem_id)
+        tags=db.session.query(Tag).filter(Tag.problem_id==params['problem_id'])
         vote_num=defaultdict(int)
 
         for t in tags:
