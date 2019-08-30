@@ -152,7 +152,7 @@ def tag_vote():
     db.session.add(newTag)
     db.session.commit()
 
-    tag=db.session.query(problem_tag).filter_by(problme_id=params['problem_id']).first()
+    tag=db.session.query(problem_tag).filter_by(problem_official_name=params['problem_id']).first()
 
     if tag==None:
         tag_params={
