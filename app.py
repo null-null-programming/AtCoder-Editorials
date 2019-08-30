@@ -89,7 +89,6 @@ def contest_search():
 def tag_search():
     tagName=request.args.get('tagName')
     problems=db.session.query(problem_tag).filter(problem_tag.first_tag==tagName)
-    print(problems)
     return render_template('tag_result.html',tagName=tagName,problems=problems)
 
 @app.route('/search/<problem_id>/<int:page>', methods=['GET','POST'])
@@ -157,7 +156,7 @@ def tag_vote():
 
     if tag==None:
         tag_params={
-            'problem_id':params['problem_id'],
+            'problem_official_name':params['problem_id'],
             'problem_name':request.args.get('contestname'),
             'first_tag':params['tag']
         }
