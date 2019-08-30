@@ -46,7 +46,7 @@ class Tag(db.Model):
     tag=db.Column(db.String(64))
     user_id=db.Column(db.Integer)
 
-class Problem_Tag(db.Model):
+class problem_tag(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     problem_official_name=db.Column(db.String(64))
     problem_name=db.Column(db.String(64))
@@ -88,7 +88,7 @@ def contest_search():
 @app.route('/tag_search',methods=['POST'])
 def tag_search():
     tagName=request.args.get('tagName')
-    problems=Problem_Tag.query.filter_by(first_tag=tagName)
+    problems=db.session.query(problem_tag).filter(problem_tag.first_tag==tagName)
     return render_template('tag_result.html',tagName=tagName,problems=problems)
 
 @app.route('/search/<problem_id>/<int:page>', methods=['GET','POST'])
@@ -152,7 +152,7 @@ def tag_vote():
     db.session.add(newTag)
     db.session.commit()
 
-    tag=db.session.query(Problem_Tag).filter_by(problme_id=params['problem_id']).first()
+    tag=db.session.query(problem_tag).filter_by(problme_id=params['problem_id']).first()
 
     if tag==None:
         tag_params={
@@ -160,7 +160,7 @@ def tag_vote():
             'problem_name':request.args.get('contestname'),
             'first_tag':params['tag']
         }
-        newProblemTag=Problem_Tag(**tag_params)
+        newProblemTag=problem_tag(**tag_params)
         db.session.add(newProblemTag)
         db.session.commit()
 
