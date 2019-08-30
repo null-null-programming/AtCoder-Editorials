@@ -157,7 +157,7 @@ def tag_vote():
     if tag==None:
         tag_params={
             'problem_official_name':params['problem_id'],
-            'problem_name':request.args.get('contestname'),
+            'problem_name':request.form.get('contestname'),
             'first_tag':params['tag']
         }
         newProblemTag=problem_tag(**tag_params)
@@ -179,7 +179,7 @@ def tag_vote():
          
         if tag !=None:
              tag.first_tag=tag_
-        tag.problem_name=request.args.get('contestname')
+        tag.problem_name=request.form.get('contestname')
         db.session.commit()
 
     return render_template('vote_fin.html')
