@@ -169,15 +169,14 @@ def tag_vote():
 
         for t in tags:
              vote_num[t.tag]+=1
-    
-         vote_num= sorted(vote_num.items(), key=lambda x:x[1],reverse=True)
+             vote_num= sorted(vote_num.items(), key=lambda x:x[1],reverse=True)
 
-         tag=None
+         tag_=None
          if len(vote_num)!=0:
-             tag=vote_num[0][0]
+             tag_=vote_num[0][0]
          
          if tag !=None:
-             tag.first_tag=tag
+             tag.first_tag=tag_
              db.session.commit()
          
 
