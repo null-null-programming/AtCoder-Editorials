@@ -31,6 +31,8 @@ class Editorial(db.Model):
     like = db.Column(db.Integer)
     user_image_url = db.Column(db.String(1024), index=True)
     user_id=db.Column(db.Integer)
+    problem_id=db.Column(db.String(64))
+    
 
 #いいね情報
 class Like(db.Model):
@@ -43,6 +45,12 @@ class Tag(db.Model):
     problem_id=db.Column(db.String(64))
     tag=db.Column(db.String(64))
     user_id=db.Column(db.Integer)
+
+class Problem_Tag(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    problem_official_name=db.Column(db.String(64))
+    problem_name=db.Column(db.String(64))
+    first_tag=db.Column(db.String(64))
 
 #コンテスト名に含まれる空白などを取り除く
 def _normalize_contestname(contestname):
@@ -77,6 +85,10 @@ def contest_search():
 
     return render_template('search.html',problems=problem_list)
 
+@app.route('/tag_search',methods=['POST'])
+def tag_search():
+    tagName=request.args.get('tagName')
+    return render_template('tag_result.html',tagName=tagName)
 
 @app.route('/search/<problem_id>/<int:page>', methods=['GET','POST'])
 def contest_get(problem_id,page=1):
@@ -112,8 +124,13 @@ def contest_get(problem_id,page=1):
 
     #ページネーション
     per_page = 10
+<<<<<<< HEAD
     editorials = db.session.query(Editorial).filter_by(contestname=problem_id).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
 
+=======
+    editorials = db.session.query(Editorial).filter_by(problem_id=problem_id).order_by(desc(Editorial.like)).paginate(page, per_page, error_out=False)
+    
+>>>>>>> update
     #ログインしている場合は、既にいいねしている「いいね欄」を塗りつぶす
     if current_user.is_authenticated==True:
         flag={}
@@ -147,7 +164,8 @@ def submit():
     params = {
         'title': request.form.get('title'),
         'description': request.form.get('description'),
-        'contestname': _normalize_contestname(request.form.get('problem_id')),
+        'contestname': _normalize_contestname(request.form.get('contest_name')),
+        'problem_id':request.form.get('problem_id'),
         'url': request.form.get('url'),
         'like':int(0),
         'user_image_url': current_user.user_image_url,
