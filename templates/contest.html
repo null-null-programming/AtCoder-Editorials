@@ -80,9 +80,9 @@
     {%endif%}
 
     <div class="container-fluid">
-        <a class="h4" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
+        <a class="h5" href="https://atcoder.jp/contests/{{contest_id}}/tasks/{{problem_id}}" target="_blank">問題ページ</a>
         <h4 class="col-1"></h4>
-        <a class="h4" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
+        <a class="h5" href="https://img.atcoder.jp/{{contest_id}}/editorial.pdf" target="_blank">公式editorial</a>
         <h4 class="col-1"></h4>
         {%if tag==None%}
         <span class="badge badge-pill badge-secondary">投票がありません</span> {%else%}
@@ -99,12 +99,13 @@
             <div class="collapse" id="sub1" data-parent="#submit-card" style="cursor: pointer;">
                 <form action="/submited " method='POST'>
                     <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                    <input type="hidden" name="problem_id" value="{{problem_id}}" />
                     <input type="text" placeholder="タイトル" name="title" style="width:535px" />
                     <br>
                     <input type="text" placeholder="URL" name="url" style="width:535px" />
                     <br>
                     <textarea placeholder=" 解説文 " name="description" style="white-space:pre; word-wrap:break-word;" rows=15 cols=57></textarea>
-                    <button type="submit" class="btn btn-info" name="problem_id" value="{{problem_id}}">投稿</button>
+                    <button type="submit" class="btn btn-info" name="contestname" value="{{contestname}}">投稿</button>
 
                 </form>
             </div>
